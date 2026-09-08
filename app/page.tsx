@@ -8,11 +8,16 @@ import { RiskBadge } from "@/components/risk-badge";
 import { MetricCard } from "@/components/metric-card";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { TopActions } from "@/components/top-actions";
+import { Logo } from "@/components/logo";
+import { AuthGuard } from "@/components/auth-guard";
 import { useTranslation } from "@/lib/i18n";
 import { RiskTier } from "@/lib/types";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
-export default function Dashboard() {
+function DashboardContent() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [filter, setFilter] = useState<RiskTier | "ALL">("ALL");
   const orders = useMemo(() => generateSyntheticOrders(1000), []);
 
@@ -35,31 +40,36 @@ export default function Dashboard() {
 
   const visible = filter === "ALL" ? predictions : predictions.filter((p) => p.prediction.tier === filter);
 
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Top bar */}
-      <header className="border-b border-slate-200 bg-white">
+      <header style={{ backgroundColor: "var(--meesho-purple)" }}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-[var(--meesho-purple)] flex items-center justify-center text-white font-bold text-lg">
-              R
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-slate-900 leading-none">RTO Intelligence</h1>
-              <p className="text-xs text-slate-400 mt-0.5">{t("app.tagline")}</p>
-            </div>
+          <div className="[&_.font-bold]:text-white">
+            <Logo size={36} />
           </div>
-          <LanguageSwitcher />
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <button
+              onClick={handleSignOut}
+              className="text-xs font-medium text-white/80 hover:text-white border border-white/20 rounded-lg px-3 py-1.5"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="max-w-6xl mx-auto p-6 space-y-6">
-        <div className="rounded-lg bg-[var(--meesho-purple-light)] border border-[var(--meesho-purple)]/20 px-4 py-2.5 text-sm text-[var(--meesho-purple-dark)] flex items-center gap-2">
-          <span className="font-semibold">DEMO DATA</span>
-          <span className="text-[var(--meesho-purple-dark)]/70">— {t("dashboard.demoDataBanner")}</span>
+        <div className="rounded-lg bg-[var(--meesho-purple-light)] border border-[var(--meesho-purple)]/15 px-4 py-2.5 text-sm flex items-center gap-2">
+          <span className="font-semibold" style={{ color: "var(--meesho-purple)" }}>DEMO DATA</span>
+          <span className="text-slate-500">— {t("dashboard.demoDataBanner")}</span>
         </div>
 
-        {/* Metrics */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <MetricCard label={t("dashboard.ordersAnalysed")} value={orders.length.toString()} accent="purple" />
           <MetricCard label={t("dashboard.highRiskOrders")} value={highRisk.length.toString()} accent="red" />
@@ -72,10 +82,8 @@ export default function Dashboard() {
           <MetricCard label={t("dashboard.currentRtoRate")} value={`${(actualRtoRate * 100).toFixed(1)}%`} accent="pink" />
         </div>
 
-        {/* What should you do today */}
         <TopActions interventions={withIntervention} />
 
-        {/* Risk distribution — clickable filters */}
         <div className="rounded-xl border border-slate-200 bg-white p-5">
           <h2 className="text-sm font-semibold text-slate-900 mb-3">Risk distribution</h2>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
@@ -100,7 +108,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Order table */}
         <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
           <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-slate-900">
@@ -127,7 +134,7 @@ export default function Dashboard() {
                   .map(({ order, prediction, intervention }) => (
                     <tr key={order.id} className="border-b border-slate-50 hover:bg-slate-50">
                       <td className="px-5 py-3">
-                        <Link href={`/orders/${order.id}`} className="text-[var(--meesho-purple)] font-medium hover:underline">
+                        <Link href={`/orders/${order.id}`} className="font-medium hover:underline" style={{ color: "var(--meesho-purple)" }}>
                           {order.id}
                         </Link>
                       </td>
@@ -146,5 +153,13 @@ export default function Dashboard() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <AuthGuard>
+      <DashboardContent />
+    </AuthGuard>
   );
 }

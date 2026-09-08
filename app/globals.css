@@ -81,11 +81,11 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --meesho-purple: #7d58ba;
-  --meesho-purple-dark: #5a3a91;
-  --meesho-purple-light: #e7e0fc;
-  --meesho-pink: #e0489b;
-  --meesho-mango: #f5a623;
+  --meesho-purple: #5c0b4e;
+  --meesho-purple-dark: #430638;
+  --meesho-purple-light: #f4e9f1;
+  --meesho-orange: #ff9800;
+  --meesho-orange-dark: #e28600;
   --meesho-green: #026127;
   --meesho-red: #cd1701;
 }

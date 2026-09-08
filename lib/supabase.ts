@@ -1,41 +1,11 @@
-// messages/hi.json
-{
-    "app.tagline": "अनुमान लगाएं। रोकें। सीखें।",
-    "dashboard.title": "डैशबोर्ड",
-    "dashboard.ordersAnalysed": "विश्लेषित ऑर्डर",
-    "dashboard.highRiskOrders": "उच्च जोखिम वाले ऑर्डर",
-    "dashboard.exposure": "अनुमानित RTO नुकसान",
-    "dashboard.exposureHelp": "अगर ये ऑर्डर वापस आते हैं तो आपको कितना नुकसान हो सकता है",
-    "dashboard.currentRtoRate": "वर्तमान RTO दर",
-    "dashboard.demoDataBanner": "यह डैशबोर्ड उत्पाद को दिखाने के लिए सिंथेटिक डेमो डेटा का उपयोग करता है।",
-    "risk.LOW": "कम जोखिम",
-    "risk.MEDIUM": "मध्यम जोखिम",
-    "risk.HIGH": "उच्च जोखिम",
-    "risk.REVIEW": "समीक्षा आवश्यक",
-    "driver.cod": "कैश ऑन डिलीवरी",
-    "driver.newCustomer": "पहली बार का ग्राहक",
-    "driver.distance": "डिलीवरी स्थान हब से दूर है",
-    "driver.addressQuality": "पता अधूरा है",
-    "driver.noLandmark": "कोई लैंडमार्क नहीं दिया गया",
-    "driver.priorRto": "ग्राहक ने पहले ऑर्डर लौटाए हैं",
-    "driver.category": "इस श्रेणी में रिटर्न अधिक होते हैं",
-    "driver.repeatCustomerSafe": "बिना रिटर्न इतिहास वाला पुराना ग्राहक",
-    "confidence.low": "इस ऑर्डर के बारे में हमारे पास सीमित जानकारी है।",
-    "confidence.medium": "कुछ महत्वपूर्ण विवरण मौजूद नहीं हैं।",
-    "confidence.high": "अधिकतर महत्वपूर्ण ऑर्डर विवरण उपलब्ध हैं।",
-    "reason.confirmAddress": "पता ढूंढना मुश्किल है। भेजने से पहले पुष्टि करना सबसे सस्ता तरीका है।",
-    "reason.newCustomerReminder": "यह पहली बार का ग्राहक है। रिमाइंडर से इनकार की संभावना घटती है।",
-    "reason.codReminder": "यह कैश-ऑन-डिलीवरी ऑर्डर है। रिमाइंडर ग्राहक को भुगतान के लिए तैयार रखता है।",
-    "reason.distance": "यह स्थान आपके हब से दूर है। डिलीवरी से पहले संपर्क को प्राथमिकता दें।",
-    "reason.priorRto": "इस ग्राहक ने पहले ऑर्डर लौटाए हैं। इसकी समीक्षा किसी व्यक्ति द्वारा होनी चाहिए।",
-    "intervention.confirmAddress": "भेजने से पहले पता पुष्टि करें",
-    "intervention.sendReminder": "डिलीवरी रिमाइंडर भेजें",
-    "intervention.prioritizeContact": "डिलीवरी से पहले संपर्क को प्राथमिकता दें",
-    "intervention.humanReview": "मानव समीक्षा के लिए भेजें",
-    "order.whyRisky": "यह जोखिम भरा क्यों है?",
-    "order.recommendedAction": "अनुशंसित कार्रवाई",
-    "order.expectedCostWithout": "कार्रवाई के बिना अनुमानित लागत",
-    "order.expectedCostWith": "कार्रवाई के साथ अनुमानित लागत",
-    "order.netSavings": "शुद्ध अनुमानित बचत",
-    "order.noActionNeeded": "अभी किसी विशेष कार्रवाई की आवश्यकता नहीं है।"
-  }
+// lib/supabase.ts
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.warn("Supabase env vars missing — check .env.local");
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
