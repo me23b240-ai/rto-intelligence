@@ -1,57 +1,101 @@
 // lib/types.ts
-export type PaymentType = "COD" | "Prepaid";
-export type RiskTier = "LOW" | "MEDIUM" | "HIGH" | "REVIEW";
-export type Confidence = "Low" | "Medium" | "High";
-export type EvidenceTag = "evidence-backed" | "benchmark-based" | "assumption";
-export type ProbabilitySource = "benchmark" | "seller_history";
-export type Friction = "low" | "medium" | "high";
 
-export interface OrderInput {
+// ---------- Reverse Logistics Engine ----------
+export type DistanceBand = "near" | "mid" | "far";
+export type RoutePath = "backhaul" | "batch" | "liquidation" | "fast_secure" | "standard";
+
+export interface ParcelInput {
   id: string;
-  orderValue: number;
-  paymentType: PaymentType;
-  pincode: string;
-  distanceKm: number | null;
-  isNewCustomer: boolean | null;
-  category: string;
-  addressQualityScore: number | null; // 0..1
-  landmarkPresent: boolean | null;
-  customerPriorRtoRate: number | null; // 0..1, null if unknown
-  finalStatus?: "Delivered" | "RTO" | "Pending";
+  value: number;
+  distanceBand: DistanceBand;
+  denseLaneToday: boolean;
+  backhaulAvailable: boolean;
 }
 
-export interface RiskDriver {
-  factor: string;              // machine key, e.g. "cod"
-  label: string;                // i18n key for display
-  points: number;
-  tag: EvidenceTag;
-  direction: "increases" | "decreases";
+export interface RouteResult {
+  path: RoutePath;
+  cost: number;
+  savings: number;
+  reasoning: string;
 }
 
-export interface RiskPrediction {
-  orderId: string;
-  score: number;                 // 0-100
-  probability: number;           // 0-1
-  probabilitySource: ProbabilitySource;
-  tier: RiskTier;
-  confidence: Confidence;
-  confidenceReason: string;      // i18n key
-  drivers: RiskDriver[];
-  signalsAvailable: number;
-  signalsTotal: number;
+export type Parcel = ParcelInput & RouteResult;
+
+// ---------- Rider Verification & Payout Engine ----------
+export type AddressDifficulty = "easy" | "hard";
+export type VerificationStatus = "verified" | "flagged_review" | "fallback_photo";
+
+export interface AttemptInput {
+  id: string;
+  riderId: string;
+  inGeofence: boolean;
+  deviceClean: boolean;
+  distanceKm: number;
+  addressDifficulty: AddressDifficulty;
+  farStopsThisShift: number;
 }
 
-export interface InterventionRecommendation {
-  type: string;                  // i18n key, e.g. "confirmAddress"
-  reasonKey: string;
-  estimatedCost: number;
-  estimatedGrossSavings: number;
-  estimatedNetSavings: number;
-  friction: Friction;
-  expectedValue: number;
+export interface PayoutBreakdown {
+  base: number;
+  distanceAddOn: number;
+  difficultyWeight: number;
+  returnBonus: number;
 }
 
-export interface EconomicsAssumptions {
-  forwardCost: number;   // ₹50 default
-  reverseCost: number;   // ₹120 default
+export interface VerificationResult {
+  status: VerificationStatus;
+  payout: number;
+  breakdown: PayoutBreakdown;
+  fairAllocationNote: string | null;
 }
+
+export type Attempt = AttemptInput & VerificationResult;
+
+export interface Rider {
+  id: string;
+  name: string;
+  attemptsToday: number;
+  verifiedRate: number;
+  flaggedCount: number;
+  earningsToday: number;
+}
+
+// ---------- Shared Settings ----------
+export type EvidenceTag = "evidence-backed" | "benchmark-based" | "assumption";
+
+export const DEFAULT_SETTINGS: Settings = {
+  standardReverseCost: 120,
+  forwardCost: 50,
+  backhaulCost: 35,
+  batchCost: 55,
+  liquidationCost: 20,
+  fastSecureCost: 90,
+  lowValueThreshold: 300,
+  highValueThreshold: 1500,
+
+  basePay: 15,
+  baseKmCovered: 4,
+  perKmRate: 3,
+  hardAddressBonus: 5,
+  farStopThreshold: 8,
+  farStopBonus: 5,      // was 8, now matches spec
+  farStopCap: 3,         // was 6, now matches spec
+};
+
+export const SETTINGS_TAGS: Record<keyof Settings, EvidenceTag> = {
+  standardReverseCost: "evidence-backed",  // 🟢 case fact
+  forwardCost: "evidence-backed",           // 🟢 case fact
+  backhaulCost: "assumption",               // 🟠 assumption
+  batchCost: "assumption",
+  liquidationCost: "assumption",
+  fastSecureCost: "assumption",
+  lowValueThreshold: "assumption",
+  highValueThreshold: "assumption",
+  basePay: "assumption",
+  baseKmCovered: "assumption",
+  perKmRate: "assumption",
+  hardAddressBonus: "assumption",
+  farStopThreshold: "assumption",
+  farStopBonus: "assumption",
+  farStopCap: "assumption",
+};
