@@ -63,6 +63,25 @@ export interface Rider {
 // ---------- Shared Settings ----------
 export type EvidenceTag = "evidence-backed" | "benchmark-based" | "assumption";
 
+export interface Settings {
+  standardReverseCost: number;
+  forwardCost: number;
+  backhaulCost: number;
+  batchCost: number;
+  liquidationCost: number;
+  fastSecureCost: number;
+  lowValueThreshold: number;
+  highValueThreshold: number;
+
+  basePay: number;
+  baseKmCovered: number;
+  perKmRate: number;
+  hardAddressBonus: number;
+  farStopThreshold: number;
+  farStopBonus: number;
+  farStopCap: number;
+}
+
 export const DEFAULT_SETTINGS: Settings = {
   standardReverseCost: 120,
   forwardCost: 50,
@@ -78,14 +97,14 @@ export const DEFAULT_SETTINGS: Settings = {
   perKmRate: 3,
   hardAddressBonus: 5,
   farStopThreshold: 8,
-  farStopBonus: 5,      // was 8, now matches spec
-  farStopCap: 3,         // was 6, now matches spec
+  farStopBonus: 5,
+  farStopCap: 3,
 };
 
 export const SETTINGS_TAGS: Record<keyof Settings, EvidenceTag> = {
-  standardReverseCost: "evidence-backed",  // 🟢 case fact
-  forwardCost: "evidence-backed",           // 🟢 case fact
-  backhaulCost: "assumption",               // 🟠 assumption
+  standardReverseCost: "evidence-backed",
+  forwardCost: "evidence-backed",
+  backhaulCost: "assumption",
   batchCost: "assumption",
   liquidationCost: "assumption",
   fastSecureCost: "assumption",

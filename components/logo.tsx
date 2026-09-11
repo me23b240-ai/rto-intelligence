@@ -7,7 +7,7 @@ export function Logo({ size = 36 }: { size?: number }) {
         style={{ width: size, height: size, backgroundColor: "var(--meesho-purple)" }}
       >
         <svg width={size * 0.62} height={size * 0.62} viewBox="0 0 32 32" fill="none">
-          {/* Original twin-arch "M" mark — own geometry, same brand color language */}
+          {/* Original twin-arch "M" mark - own geometry, same brand color language */}
           <path
             d="M5 25V13a4 4 0 0 1 4-4 4 4 0 0 1 4 4v4"
             stroke="var(--meesho-orange)"

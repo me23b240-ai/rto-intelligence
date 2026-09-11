@@ -26,7 +26,7 @@ function RiderEngineContent() {
   const verifiedRate = (attempts.filter((a) => a.status === "verified").length / attempts.length) * 100;
   const flaggedCount = attempts.filter((a) => a.status === "flagged_review").length;
   const avgPayout = attempts.reduce((s, a) => s + a.payout, 0) / attempts.length;
-  const compliantShifts = riders.filter((r) => true).length; // placeholder — all riders shown are within policy by construction of cap check
+  const compliantShifts = riders.filter((r) => true).length; // placeholder - all riders shown are within policy by construction of cap check
   const fairCompliancePct = 100 - (attempts.filter((a) => a.fairAllocationNote).length / attempts.length) * 100;
 
   const [inGeofence, setInGeofence] = useState(true);

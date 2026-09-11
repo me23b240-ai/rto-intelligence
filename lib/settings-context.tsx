@@ -26,7 +26,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   function updateSetting(key: keyof Settings, value: number) {
-    setSettings((prev) => {
+    setSettings((prev: Settings) => {
       const next = { ...prev, [key]: value };
       localStorage.setItem("dro-settings", JSON.stringify(next));
       return next;

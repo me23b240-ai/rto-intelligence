@@ -23,7 +23,7 @@ const FIELDS: { key: keyof Settings; label: string; prefix?: string; suffix?: st
   { key: "farStopCap", label: "Far-stop cap per shift", suffix: "stops" },
 ];
 
-function SettingsContent() {
+export default function SettingsPage() {
   const { settings, updateSetting, resetSettings } = useSettings();
 
   return (
@@ -42,7 +42,7 @@ function SettingsContent() {
 
         <div className="rounded-xl border border-slate-200 bg-white divide-y divide-slate-100">
           {FIELDS.map((f) => (
-            <div key={f.key} className="flex items-center justify-between px-5 py-3">
+            <div key={String(f.key)} className="flex items-center justify-between px-5 py-3">
               <div>
                 <span className="text-sm text-slate-700">{f.label}</span>
                 <EvidenceTagBadge tag={SETTINGS_TAGS[f.key]} />
@@ -63,8 +63,4 @@ function SettingsContent() {
       </main>
     </div>
   );
-}
-
-export default function SettingsPage() {
-  return <SettingsContent />;
 }

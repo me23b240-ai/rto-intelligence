@@ -8,7 +8,7 @@ const DICTS: Record<string, Record<string, string>> = { en, hi };
 export const SUPPORTED_LANGUAGES = [
   { code: "en", label: "English" },
   { code: "hi", label: "हिन्दी" },
-  { code: "ta", label: "தமிழ்" },   // stub — falls back to English until messages/ta.json is added
+  { code: "ta", label: "தமிழ்" },   // stub - falls back to English until messages/ta.json is added
   { code: "te", label: "తెలుగు" },
   { code: "kn", label: "ಕನ್ನಡ" },
   { code: "mr", label: "मराठी" },

@@ -7,7 +7,7 @@ export function routeParcel(input: ParcelInput, settings: Settings): RouteResult
       path: "backhaul",
       cost: settings.backhaulCost,
       savings: settings.standardReverseCost - settings.backhaulCost,
-      reasoning: "A vehicle already travels this route empty — the parcel rides back for near-zero marginal cost.",
+      reasoning: "A vehicle already travels this route empty - the parcel rides back for near-zero marginal cost.",
     };
   }
 
@@ -25,7 +25,7 @@ export function routeParcel(input: ParcelInput, settings: Settings): RouteResult
       path: "liquidation",
       cost: settings.liquidationCost,
       savings: settings.standardReverseCost - settings.liquidationCost,
-      reasoning: "Low order value plus long return distance — cheaper to liquidate locally than ship it all the way back.",
+      reasoning: "Low order value plus long return distance - cheaper to liquidate locally than ship it all the way back.",
     };
   }
 
@@ -34,7 +34,7 @@ export function routeParcel(input: ParcelInput, settings: Settings): RouteResult
       path: "fast_secure",
       cost: settings.fastSecureCost,
       savings: settings.standardReverseCost - settings.fastSecureCost,
-      reasoning: "High-value item — a faster, more secure return path is worth the extra cost to protect the asset.",
+      reasoning: "High-value item - a faster, more secure return path is worth the extra cost to protect the asset.",
     };
   }
 
@@ -42,6 +42,6 @@ export function routeParcel(input: ParcelInput, settings: Settings): RouteResult
     path: "standard",
     cost: settings.standardReverseCost,
     savings: 0,
-    reasoning: "No cheaper recovery path applies — standard reverse logistics is used.",
+    reasoning: "No cheaper recovery path applies - standard reverse logistics is used.",
   };
 }

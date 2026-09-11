@@ -4,7 +4,7 @@ import { AttemptInput, VerificationResult, Settings } from "./types";
 export function verifyAndPay(input: AttemptInput, settings: Settings): VerificationResult {
   let fairAllocationNote: string | null = null;
   if (input.farStopsThisShift >= settings.farStopCap) {
-    fairAllocationNote = `This rider has already covered ${input.farStopsThisShift} far stops this shift — next far stop would rotate to another rider.`;
+    fairAllocationNote = `This rider has already covered ${input.farStopsThisShift} far stops this shift - next far stop would rotate to another rider.`;
   }
 
   let status: VerificationResult["status"];
