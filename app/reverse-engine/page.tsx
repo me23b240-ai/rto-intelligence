@@ -76,7 +76,7 @@ function ReverseEngineContent() {
     if (simResult.path === "batch") consumeBatch();
     addDecision({
       engine: "reverse",
-      summary: `${PATH_LABEL[simResult.path]} — ₹${value} ${category}, ${distanceBand} distance`,
+      summary: `${PATH_LABEL[simResult.path]} - ₹${value} ${category}, ${distanceBand} distance`,
       detail: simResult.reasoning,
       cost: simResult.cost,
     });
@@ -91,7 +91,7 @@ function ReverseEngineContent() {
         <div>
           <h1 className="text-xl font-bold text-slate-900">Reverse Logistics Engine</h1>
           <p className="text-sm text-slate-400">Route each failed parcel to its cheapest responsible recovery path.</p>
-          <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 — transparent rules, not ML</span>
+          <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 - transparent rules, not ML</span>
         </div>
 
         {lastFlaggedAttempt && (
@@ -100,7 +100,7 @@ function ReverseEngineContent() {
               <div className="text-sm font-semibold text-[var(--meesho-purple-dark)]">
                 Rider Verification just flagged an attempt ({lastFlaggedAttempt.distanceKm}km, {lastFlaggedAttempt.addressDifficulty} address, {lastFlaggedAttempt.status.replace("_", " ")})
               </div>
-              <p className="text-xs text-slate-500 mt-0.5">This delivery has now failed — see how this engine would route it.</p>
+              <p className="text-xs text-slate-500 mt-0.5">This delivery has now failed - see how this engine would route it.</p>
             </div>
             <div className="flex gap-2">
               <button onClick={useFlaggedAttemptAsParcel} className="text-xs font-medium text-white px-3 py-1.5 rounded-lg" style={{ backgroundColor: "var(--meesho-purple)" }}>
@@ -127,7 +127,7 @@ function ReverseEngineContent() {
             <CapacityBar label="Backhaul" used={capacity.backhaulUsedToday} cap={settings.dailyBackhaulCapacity} />
             <CapacityBar label="Batch consolidation" used={capacity.batchUsedToday} cap={settings.dailyBatchCapacity} />
           </div>
-          <p className="text-xs text-slate-400 mt-3">Every parcel you process below draws down this shared capacity — once it's used up, even qualifying parcels fall back to standard reverse.</p>
+          <p className="text-xs text-slate-400 mt-3">Every parcel you process below draws down this shared capacity - once it's used up, even qualifying parcels fall back to standard reverse.</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6">

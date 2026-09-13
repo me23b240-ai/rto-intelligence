@@ -4,10 +4,10 @@ import { AttemptInput, VerificationResult, Settings } from "./types";
 export function verifyAndPay(input: AttemptInput, settings: Settings): VerificationResult {
   let fairAllocationNote: string | null = null;
   if (input.farStopsThisShift >= settings.farStopCap) {
-    fairAllocationNote = `This rider has already covered ${input.farStopsThisShift} far stops this shift — this stop was rotated to another rider.`;
+    fairAllocationNote = `This rider has already covered ${input.farStopsThisShift} far stops this shift - this stop was rotated to another rider.`;
   }
 
-  // Confidence replaces a hard binary — real GPS/device signals are noisy,
+  // Confidence replaces a hard binary - real GPS/device signals are noisy,
   // so we express verification as a probability, not a pass/fail.
   let confidence = 0.5;
   confidence += input.inGeofence ? 0.3 : -0.3;

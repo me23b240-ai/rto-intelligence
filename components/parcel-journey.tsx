@@ -10,7 +10,7 @@ const STAGES = [
   { title: "In transit", icon: IconTruck, breaks: "Customer intent quietly decreases as transit days pass." },
   { title: "Last-mile", icon: IconRider, breaks: "No check on whether the customer is actually available." },
   { title: "Attempt", icon: IconDoor, breaks: "Customer may not have cash on hand for COD." },
-  { title: "RTO", icon: IconReturn, breaks: "Every failure gets the same treatment — full reverse journey.", isEnd: true },
+  { title: "RTO", icon: IconReturn, breaks: "Every failure gets the same treatment - full reverse journey.", isEnd: true },
 ];
 
 export function ParcelJourney() {
@@ -19,7 +19,7 @@ export function ParcelJourney() {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4">
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-sm font-semibold text-slate-900">A parcel's journey — tap a step to see where it breaks</h2>
+        <h2 className="text-sm font-semibold text-slate-900">A parcel's journey - tap a step to see where it breaks</h2>
       </div>
 
       <div className="flex items-center gap-1">

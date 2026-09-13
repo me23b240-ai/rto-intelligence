@@ -21,7 +21,7 @@ const FIELDS: { key: keyof Settings; label: string; prefix?: string; suffix?: st
   { key: "farStopThreshold", label: "Far-stop distance threshold", suffix: "km" },
   { key: "farStopBonus", label: "Far-stop return bonus", prefix: "₹" },
   { key: "farStopCap", label: "Far-stop cap per shift", suffix: "stops" },
-  // app/settings/page.tsx — add to FIELDS array
+  // app/settings/page.tsx - add to FIELDS array
   { key: "annualOrderVolume", label: "Annual placed orders" },
   { key: "codSharePct", label: "COD share of orders", suffix: "%" },
   { key: "codRtoRatePct", label: "COD RTO rate", suffix: "%" },
@@ -36,7 +36,7 @@ const FIELDS: { key: keyof Settings; label: string; prefix?: string; suffix?: st
   { key: "dailyBatchCapacity", label: "Daily batch capacity", suffix: "parcels" },
   { key: "maxAttemptsBeforeRTO", label: "Max attempts before RTO" },
   { key: "fragileValueBufferPct", label: "Fragile value threshold reduction", suffix: "%" },
-  { key: "reattemptBonus", label: "Reattempt bonus (attempt #2+)", prefix: "₹" },s
+  { key: "reattemptBonus", label: "Reattempt bonus (attempt #2+)", prefix: "₹" },
 ];
 
 export default function SettingsPage() {
@@ -49,7 +49,7 @@ export default function SettingsPage() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-xl font-bold text-slate-900">Settings</h1>
-            <p className="text-sm text-slate-400">Every assumption used by both engines — change it and both pages recalculate live.</p>
+            <p className="text-sm text-slate-400">Every assumption used by both engines - change it and both pages recalculate live.</p>
           </div>
           <button onClick={resetSettings} className="text-xs font-medium text-slate-500 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-100">
             Reset to defaults

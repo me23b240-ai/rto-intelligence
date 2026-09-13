@@ -35,8 +35,8 @@ export interface AttemptInput {
   distanceKm: number;
   addressDifficulty: AddressDifficulty;
   farStopsThisShift: number;
-  attemptNumber: number;          // NEW — 1st, 2nd, 3rd attempt
-  priorFailureReason?: string;     // NEW — optional, feeds next attempt's context
+  attemptNumber: number;          // NEW - 1st, 2nd, 3rd attempt
+  priorFailureReason?: string;     // NEW - optional, feeds next attempt's context
 }
 
 export interface PayoutBreakdown {
@@ -124,13 +124,13 @@ export interface Settings {
   farStopBonus: number;
   farStopCap: number;
 
-  // Business Impact — case baseline
+  // Business Impact - case baseline
   annualOrderVolume: number;       // 2.67B, FY26
   codSharePct: number;              // 80%
   codRtoRatePct: number;             // 20%
   prepaidRtoRatePct: number;         // 5%
 
-  // Business Impact — recovery scenarios
+  // Business Impact - recovery scenarios
   conservativeAddressableSharePct: number; // 25%
   conservativeRecoveryRatePct: number;      // 30%
   baseAddressableSharePct: number;          // 40%

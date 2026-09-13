@@ -14,10 +14,7 @@ export default function Landing() {
         <div className="text-center pt-8 pb-4">
           <h1 className="text-3xl font-bold text-slate-900">Delivery Recovery OS</h1>
           <p className="text-slate-500 mt-2 max-w-xl mx-auto">
-            Two independent engines, each solving a different moment in the delivery journey - Rider Verification
-            governs the attempt itself; Reverse Logistics governs what happens if that attempt still fails.
-            They're built on the same cost-and-weight assumptions (see Settings), but operate as separate tools
-            in this prototype.
+          Two engines, one shared operating picture. Rider Verification governs the delivery attempt itself - GPS and device checks, fair workload allocation, difficulty-weighted pay. When an attempt can't be verified, that failure carries forward: the Reverse Logistics Engine picks it up and routes it to the cheapest responsible recovery path, using the same cost assumptions (see Settings) both engines share.
           </p>
           <p className="text-xs text-slate-400 mt-3">Phase 1: transparent rules engine - not a trained model.</p>
         </div>

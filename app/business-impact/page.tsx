@@ -36,9 +36,9 @@ export default function BusinessImpactPage() {
       <main className="max-w-5xl mx-auto p-6 space-y-6">
         <div>
           <h1 className="text-xl font-bold text-slate-900">Business Impact</h1>
-          <p className="text-sm text-slate-400">Every number below is computed live from your Settings — change an assumption there and this page recalculates.</p>
+          <p className="text-sm text-slate-400">Every number below is computed live from your Settings - change an assumption there and this page recalculates.</p>
           <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">
-            Phase 1 — transparent arithmetic, not a forecast
+            Phase 1 - transparent arithmetic, not a forecast
           </span>
         </div>
 
@@ -47,7 +47,7 @@ export default function BusinessImpactPage() {
           <h2 className="text-sm font-semibold text-slate-900 mb-1">
             The baseline, per 100 orders <EvidenceTagBadge tag="fact" />
           </h2>
-          <p className="text-xs text-slate-400 mb-4">Built directly from the case cohort split — nothing here is an assumption.</p>
+          <p className="text-xs text-slate-400 mb-4">Built directly from the case cohort split - nothing here is an assumption.</p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="rounded-lg bg-slate-50 p-3">
@@ -90,7 +90,7 @@ export default function BusinessImpactPage() {
           <h2 className="text-sm font-semibold text-slate-900 mb-1">
             How much is recoverable? <EvidenceTagBadge tag="hypothesis" />
           </h2>
-          <p className="text-xs text-slate-400 mb-4">Addressable share and recovery rate are our estimates, not Meesho figures — shown as a range across three scenarios, not a single number.</p>
+          <p className="text-xs text-slate-400 mb-4">Addressable share and recovery rate are our estimates, not Meesho figures - shown as a range across three scenarios, not a single number.</p>
 
           <div className="flex gap-2 mb-4">
             {(["conservative", "base", "aggressive"] as ScenarioName[]).map((s) => (
@@ -136,7 +136,7 @@ export default function BusinessImpactPage() {
         </div>
 
         <p className="text-xs text-slate-400 text-center">
-          Every number above traces back to Settings — change an assumption there and this entire page recalculates, live.
+          Every number above traces back to Settings - change an assumption there and this entire page recalculates, live.
         </p>
       </main>
     </div>

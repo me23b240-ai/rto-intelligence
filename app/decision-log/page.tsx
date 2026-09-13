@@ -25,7 +25,7 @@ export default function DecisionLogPage() {
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
             <h1 className="text-xl font-bold text-slate-900">Decision Log</h1>
-            <p className="text-sm text-slate-400">Every decision you process on either engine lands here — record what actually happened to close the loop.</p>
+            <p className="text-sm text-slate-400">Every decision you process on either engine lands here - record what actually happened to close the loop.</p>
           </div>
           {decisionLog.length > 0 && (
             <button onClick={clearLog} className="text-xs text-slate-400 hover:text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5">Clear log</button>
@@ -43,13 +43,13 @@ export default function DecisionLogPage() {
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-4">
             <div className="text-xs text-slate-400">Success rate (resolved)</div>
-            <div className="text-2xl font-bold text-slate-900">{successRate === null ? "—" : `${successRate.toFixed(0)}%`}</div>
+            <div className="text-2xl font-bold text-slate-900">{successRate === null ? "-" : `${successRate.toFixed(0)}%`}</div>
           </div>
         </div>
 
         {decisionLog.length === 0 ? (
           <div className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-sm text-slate-400">
-            Nothing here yet — go to the Reverse Logistics or Rider Verification engine, run the simulator, and click "Process" or "Log this attempt".
+            Nothing here yet - go to the Reverse Logistics or Rider Verification engine, run the simulator, and click "Process" or "Log this attempt".
           </div>
         ) : (
           <div className="rounded-xl border border-slate-200 bg-white divide-y divide-slate-100">

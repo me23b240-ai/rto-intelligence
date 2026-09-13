@@ -30,7 +30,7 @@ export function generateParcels(settings: Settings, count = 300): Parcel[] {
       backhaulAvailable: rng() < 0.2,
       category: categories[Math.floor(rng() * categories.length)],
     };
-    // Historical demo rows assume capacity was available at the time —
+    // Historical demo rows assume capacity was available at the time -
     // live capacity constraints only apply to the interactive simulator.
     const result = routeParcel(input, settings, { backhaulOpen: true, batchOpen: true });
     parcels.push({ ...input, ...result });

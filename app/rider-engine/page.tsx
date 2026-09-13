@@ -76,7 +76,7 @@ function RiderEngineContent() {
   function processAttempt() {
     addDecision({
       engine: "rider",
-      summary: `${STATUS_LABEL[simResult.status]} — ${distanceKm}km, ${difficulty} address, attempt #${attemptNumber}`,
+      summary: `${STATUS_LABEL[simResult.status]} - ${distanceKm}km, ${difficulty} address, attempt #${attemptNumber}`,
       detail: `Confidence ${(simResult.confidence * 100).toFixed(0)}%. Payout ₹${simResult.payout}.`,
       cost: simResult.payout,
     });
@@ -91,7 +91,7 @@ function RiderEngineContent() {
         <div>
           <h1 className="text-xl font-bold text-slate-900">Rider Verification & Payout Engine</h1>
           <p className="text-sm text-slate-400">Fair allocation, attempt verification, and difficulty-weighted pay.</p>
-          <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 — transparent rules, not ML</span>
+          <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 - transparent rules, not ML</span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -116,7 +116,7 @@ function RiderEngineContent() {
             ))}
           </div>
           {lastAllocation?.rotated && (
-            <p className="text-xs text-red-600 mt-3">⚠ Every rider was at or over the cap — this stop was force-assigned anyway.</p>
+            <p className="text-xs text-red-600 mt-3">⚠ Every rider was at or over the cap - this stop was force-assigned anyway.</p>
           )}
         </div>
 
