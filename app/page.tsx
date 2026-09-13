@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import { Nav } from "@/components/nav";
+import { ParcelJourney } from "@/components/parcel-journey";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,8 @@ export default function Landing() {
           </p>
           <p className="text-xs text-slate-400 mt-3">Phase 1: transparent rules engine - not a trained model.</p>
         </div>
+
+        <ParcelJourney />
 
         <div className="grid md:grid-cols-2 gap-6 relative">
           <Link href="/rider-engine" className="rounded-xl border-2 border-slate-200 bg-white p-6 hover:border-[var(--meesho-purple)] transition">

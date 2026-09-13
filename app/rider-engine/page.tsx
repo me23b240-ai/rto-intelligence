@@ -1,9 +1,11 @@
 // app/rider-engine/page.tsx
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Nav } from "@/components/nav";
 import { MetricCard } from "@/components/metric-card";
 import { useSettings } from "@/lib/settings-context";
+import { useOperations } from "@/lib/operations-context";
+import { useSharedAttempt } from "@/lib/shared-attempt-context";
 import { generateRiderData } from "@/lib/synthetic-riders";
 import { verifyAndPay } from "@/lib/rider-engine";
 import { AddressDifficulty, VerificationStatus } from "@/lib/types";
@@ -19,22 +21,68 @@ const STATUS_COLOR: Record<VerificationStatus, string> = {
   fallback_photo: "text-amber-700 bg-amber-50 border-amber-200",
 };
 
+function ConfidenceMeter({ value }: { value: number }) {
+  const pct = value * 100;
+  const color = pct >= 75 ? "#026127" : pct >= 40 ? "#e28600" : "#cd1701";
+  return (
+    <div>
+      <div className="flex justify-between text-xs text-slate-500 mb-1"><span>Confidence</span><span>{pct.toFixed(0)}%</span></div>
+      <div className="h-2 rounded-full bg-slate-100 overflow-hidden"><div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} /></div>
+    </div>
+  );
+}
+
 function RiderEngineContent() {
   const { settings } = useSettings();
+  const { roster, allocateFarStop, resetRoster, addDecision } = useOperations();
+  const { setLastFlaggedAttempt } = useSharedAttempt();
   const { attempts, riders } = useMemo(() => generateRiderData(settings), [settings]);
 
   const verifiedRate = (attempts.filter((a) => a.status === "verified").length / attempts.length) * 100;
   const flaggedCount = attempts.filter((a) => a.status === "flagged_review").length;
   const avgPayout = attempts.reduce((s, a) => s + a.payout, 0) / attempts.length;
-  const compliantShifts = riders.filter((r) => true).length; // placeholder - all riders shown are within policy by construction of cap check
   const fairCompliancePct = 100 - (attempts.filter((a) => a.fairAllocationNote).length / attempts.length) * 100;
 
   const [inGeofence, setInGeofence] = useState(true);
   const [deviceClean, setDeviceClean] = useState(true);
   const [distanceKm, setDistanceKm] = useState(5);
   const [difficulty, setDifficulty] = useState<AddressDifficulty>("easy");
+  const [attemptNumber, setAttemptNumber] = useState(1);
   const [farStops, setFarStops] = useState(2);
-  const simResult = verifyAndPay({ id: "sim", riderId: "sim", inGeofence, deviceClean, distanceKm, addressDifficulty: difficulty, farStopsThisShift: farStops }, settings);
+  const [lastAllocation, setLastAllocation] = useState<{ riderId: string; rotated: boolean } | null>(null);
+  const [justLogged, setJustLogged] = useState(false);
+
+  const simResult = verifyAndPay(
+    { id: "sim", riderId: lastAllocation?.riderId ?? "sim", inGeofence, deviceClean, distanceKm, addressDifficulty: difficulty, farStopsThisShift: farStops, attemptNumber },
+    settings
+  );
+
+  useEffect(() => {
+    if (simResult.status !== "verified") {
+      setLastFlaggedAttempt({
+        id: "sim-live", riderId: lastAllocation?.riderId ?? "sim", inGeofence, deviceClean, distanceKm,
+        addressDifficulty: difficulty, farStopsThisShift: farStops, attemptNumber, ...simResult,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [simResult.status, distanceKm, difficulty, farStops, inGeofence, deviceClean, attemptNumber]);
+
+  function autoAllocate() {
+    const result = allocateFarStop(settings.farStopCap);
+    setLastAllocation(result);
+    setFarStops(roster.find((r) => r.id === result.riderId)?.farStopsToday ?? farStops);
+  }
+
+  function processAttempt() {
+    addDecision({
+      engine: "rider",
+      summary: `${STATUS_LABEL[simResult.status]} — ${distanceKm}km, ${difficulty} address, attempt #${attemptNumber}`,
+      detail: `Confidence ${(simResult.confidence * 100).toFixed(0)}%. Payout ₹${simResult.payout}.`,
+      cost: simResult.payout,
+    });
+    setJustLogged(true);
+    setTimeout(() => setJustLogged(false), 2000);
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -43,6 +91,7 @@ function RiderEngineContent() {
         <div>
           <h1 className="text-xl font-bold text-slate-900">Rider Verification & Payout Engine</h1>
           <p className="text-sm text-slate-400">Fair allocation, attempt verification, and difficulty-weighted pay.</p>
+          <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 — transparent rules, not ML</span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -52,10 +101,32 @@ function RiderEngineContent() {
           <MetricCard label="Fair-allocation compliance" value={`${fairCompliancePct.toFixed(0)}%`} accent={fairCompliancePct < 70 ? "red" : "purple"} />
         </div>
 
+        <div className="rounded-xl border border-slate-200 bg-white p-5">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-slate-900">Today's rider roster (shared allocation)</h2>
+            <button onClick={resetRoster} className="text-xs text-slate-400 hover:text-slate-600">Reset day</button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {roster.map((r) => (
+              <div key={r.id} className={`rounded-lg border p-3 ${lastAllocation?.riderId === r.id ? "border-[var(--meesho-purple)] bg-[var(--meesho-purple-light)]" : "border-slate-100 bg-slate-50"}`}>
+                <div className="text-xs font-medium text-slate-700">{r.name}</div>
+                <div className="text-lg font-bold text-slate-900">{r.farStopsToday}</div>
+                <div className="text-[10px] text-slate-400">far stops / cap {settings.farStopCap}</div>
+              </div>
+            ))}
+          </div>
+          {lastAllocation?.rotated && (
+            <p className="text-xs text-red-600 mt-3">⚠ Every rider was at or over the cap — this stop was force-assigned anyway.</p>
+          )}
+        </div>
+
         <div className="grid md:grid-cols-2 gap-6">
           <div className="rounded-xl border border-slate-200 bg-white p-5">
             <h2 className="text-sm font-semibold text-slate-900 mb-4">Live simulator</h2>
             <div className="space-y-4">
+              <button onClick={autoAllocate} className="text-xs font-medium text-white px-3 py-1.5 rounded-lg" style={{ backgroundColor: "var(--meesho-purple)" }}>
+                Auto-assign next stop from roster
+              </button>
               <label className="flex items-center gap-2 text-xs font-medium text-slate-600">
                 <input type="checkbox" checked={inGeofence} onChange={(e) => setInGeofence(e.target.checked)} /> GPS in geofence
               </label>
@@ -75,29 +146,42 @@ function RiderEngineContent() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-medium text-slate-600 flex justify-between"><span>Far stops this shift</span><span>{farStops}</span></label>
-                <input type="range" min={0} max={10} step={1} value={farStops} onChange={(e) => setFarStops(+e.target.value)} className="w-full accent-[var(--meesho-purple)]" />
+                <label className="text-xs font-medium text-slate-600">Attempt number</label>
+                <div className="flex gap-2 mt-1">
+                  {[1, 2, 3].map((n) => (
+                    <button key={n} onClick={() => setAttemptNumber(n)} className={`text-xs px-3 py-1.5 rounded-lg border ${attemptNumber === n ? "border-[var(--meesho-purple)] bg-[var(--meesho-purple-light)]" : "border-slate-200"}`}>#{n}</button>
+                  ))}
+                </div>
               </div>
             </div>
 
             <div className={`mt-5 rounded-lg border p-4 ${STATUS_COLOR[simResult.status]}`}>
               <div className="text-sm font-bold">{STATUS_LABEL[simResult.status]}</div>
               {simResult.fairAllocationNote && <div className="text-xs mt-1">{simResult.fairAllocationNote}</div>}
+              <div className="mt-2"><ConfidenceMeter value={simResult.confidence} /></div>
               <div className="text-sm mt-3">Payout: <strong>₹{simResult.payout}</strong></div>
               <div className="text-xs mt-1 text-slate-500">
-                base ₹{simResult.breakdown.base} + distance ₹{simResult.breakdown.distanceAddOn} + difficulty ₹{simResult.breakdown.difficultyWeight} + return bonus ₹{simResult.breakdown.returnBonus}
+                base ₹{simResult.breakdown.base} + distance ₹{simResult.breakdown.distanceAddOn} + difficulty ₹{simResult.breakdown.difficultyWeight} + return ₹{simResult.breakdown.returnBonus} + reattempt ₹{simResult.breakdown.reattemptBonus}
               </div>
             </div>
+
+            <button
+              onClick={processAttempt}
+              className="w-full mt-3 text-sm font-semibold text-white py-2.5 rounded-lg transition"
+              style={{ backgroundColor: justLogged ? "#026127" : "var(--meesho-orange)" }}
+            >
+              {justLogged ? "✓ Logged to Decision Log" : "Log this attempt"}
+            </button>
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white p-5">
             <h2 className="text-sm font-semibold text-slate-900 mb-4">Verification logic</h2>
             <ol className="space-y-3 text-sm">
-              <li className="flex gap-2"><span className="font-bold text-slate-400">1</span> Over the far-stop cap this shift? → note, would rotate to next rider</li>
-              <li className="flex gap-2"><span className="font-bold text-slate-400">2</span> GPS out of geofence AND device suspicious? → flagged for review</li>
-              <li className="flex gap-2"><span className="font-bold text-slate-400">3</span> Only one check fails? → fallback photo evidence required</li>
-              <li className="flex gap-2"><span className="font-bold text-slate-400">4</span> Both checks pass? → verified attempt</li>
-              <li className="flex gap-2"><span className="font-bold text-slate-400">5</span> Payout = base + per-km beyond {settings.baseKmCovered}km + hard-address bonus + far-stop bonus</li>
+              <li className="flex gap-2"><span className="font-bold text-slate-400">1</span> Confidence = 0.5 base ± geofence ± device signal</li>
+              <li className="flex gap-2"><span className="font-bold text-slate-400">2</span> Confidence ≥ 75%? → verified</li>
+              <li className="flex gap-2"><span className="font-bold text-slate-400">3</span> 40–75%? → fallback photo required</li>
+              <li className="flex gap-2"><span className="font-bold text-slate-400">4</span> Below 40%? → flagged for review</li>
+              <li className="flex gap-2"><span className="font-bold text-slate-400">5</span> Payout = base + per-km + hard-address + far-stop + reattempt (₹{settings.reattemptBonus} from attempt #2 onward)</li>
             </ol>
           </div>
         </div>
@@ -108,8 +192,7 @@ function RiderEngineContent() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-xs text-slate-400 uppercase border-b border-slate-100">
-                  <th className="px-5 py-2">Rider</th><th className="px-5 py-2">Attempts</th><th className="px-5 py-2">Verified %</th>
-                  <th className="px-5 py-2">Flagged</th><th className="px-5 py-2">Earnings</th>
+                  <th className="px-5 py-2">Rider</th><th className="px-5 py-2">Attempts</th><th className="px-5 py-2">Verified %</th><th className="px-5 py-2">Flagged</th><th className="px-5 py-2">Earnings</th>
                 </tr>
               </thead>
               <tbody>

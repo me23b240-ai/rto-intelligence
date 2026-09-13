@@ -35,6 +35,7 @@ export function generateRiderData(settings: Settings, riderCount = 15, attemptCo
       distanceKm,
       addressDifficulty: (rng() < 0.35 ? "hard" : "easy") as AddressDifficulty,
       farStopsThisShift: shiftCounters[riderId],
+      attemptNumber: 1, // historical rows are modeled as first attempts
     };
     const result = verifyAndPay(input, settings);
     attempts.push({ ...input, ...result });
@@ -46,12 +47,9 @@ export function generateRiderData(settings: Settings, riderCount = 15, attemptCo
     const flagged = mine.filter((a) => a.status === "flagged_review").length;
     const earnings = mine.reduce((sum, a) => sum + a.payout, 0);
     return {
-      id,
-      name: `Rider ${idx + 1}`,
-      attemptsToday: mine.length,
+      id, name: `Rider ${idx + 1}`, attemptsToday: mine.length,
       verifiedRate: mine.length ? verified / mine.length : 0,
-      flaggedCount: flagged,
-      earningsToday: Math.round(earnings * 100) / 100,
+      flaggedCount: flagged, earningsToday: Math.round(earnings * 100) / 100,
     };
   });
 

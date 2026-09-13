@@ -21,6 +21,22 @@ const FIELDS: { key: keyof Settings; label: string; prefix?: string; suffix?: st
   { key: "farStopThreshold", label: "Far-stop distance threshold", suffix: "km" },
   { key: "farStopBonus", label: "Far-stop return bonus", prefix: "₹" },
   { key: "farStopCap", label: "Far-stop cap per shift", suffix: "stops" },
+  // app/settings/page.tsx — add to FIELDS array
+  { key: "annualOrderVolume", label: "Annual placed orders" },
+  { key: "codSharePct", label: "COD share of orders", suffix: "%" },
+  { key: "codRtoRatePct", label: "COD RTO rate", suffix: "%" },
+  { key: "prepaidRtoRatePct", label: "Prepaid RTO rate", suffix: "%" },
+  { key: "conservativeAddressableSharePct", label: "Conservative: addressable share", suffix: "%" },
+  { key: "conservativeRecoveryRatePct", label: "Conservative: recovery rate", suffix: "%" },
+  { key: "baseAddressableSharePct", label: "Base: addressable share", suffix: "%" },
+  { key: "baseRecoveryRatePct", label: "Base: recovery rate", suffix: "%" },
+  { key: "aggressiveAddressableSharePct", label: "Aggressive: addressable share", suffix: "%" },
+  { key: "aggressiveRecoveryRatePct", label: "Aggressive: recovery rate", suffix: "%" },
+  { key: "dailyBackhaulCapacity", label: "Daily backhaul capacity", suffix: "parcels" },
+  { key: "dailyBatchCapacity", label: "Daily batch capacity", suffix: "parcels" },
+  { key: "maxAttemptsBeforeRTO", label: "Max attempts before RTO" },
+  { key: "fragileValueBufferPct", label: "Fragile value threshold reduction", suffix: "%" },
+  { key: "reattemptBonus", label: "Reattempt bonus (attempt #2+)", prefix: "₹" },s
 ];
 
 export default function SettingsPage() {

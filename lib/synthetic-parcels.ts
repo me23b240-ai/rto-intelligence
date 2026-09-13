@@ -1,5 +1,5 @@
 // lib/synthetic-parcels.ts
-import { ParcelInput, Parcel, Settings, DistanceBand } from "./types";
+import { ParcelInput, Parcel, Settings, DistanceBand, ParcelCategory } from "./types";
 import { routeParcel } from "./reverse-engine";
 
 function mulberry32(seed: number) {
@@ -18,6 +18,7 @@ export function generateParcels(settings: Settings, count = 300): Parcel[] {
 
   const rng = mulberry32(101);
   const bands: DistanceBand[] = ["near", "mid", "far"];
+  const categories: ParcelCategory[] = ["Fashion", "Fashion", "Electronics", "Fragile", "Other"];
   const parcels: Parcel[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -27,8 +28,11 @@ export function generateParcels(settings: Settings, count = 300): Parcel[] {
       distanceBand: bands[Math.floor(rng() * bands.length)],
       denseLaneToday: rng() < 0.3,
       backhaulAvailable: rng() < 0.2,
+      category: categories[Math.floor(rng() * categories.length)],
     };
-    const result = routeParcel(input, settings);
+    // Historical demo rows assume capacity was available at the time —
+    // live capacity constraints only apply to the interactive simulator.
+    const result = routeParcel(input, settings, { backhaulOpen: true, batchOpen: true });
     parcels.push({ ...input, ...result });
   }
 
