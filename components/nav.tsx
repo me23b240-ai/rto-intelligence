@@ -7,7 +7,7 @@ import { IconOverview, IconPackageRoute, IconRider, IconChart, IconLog, IconSett
 
 const LINKS = [
   { href: "/", label: "Overview", icon: IconOverview },
-  { href: "/reverse-engine", label: "Reverse Logistics Engine", icon: IconPackageRoute },
+  { href: "/awb-terminal", label: "AWB Terminal", icon: IconPackageRoute },
   { href: "/rider-engine", label: "Rider Verification Engine", icon: IconRider },
   { href: "/business-impact", label: "Business Impact", icon: IconChart },
   { href: "/decision-log", label: "Decision Log", icon: IconLog },
