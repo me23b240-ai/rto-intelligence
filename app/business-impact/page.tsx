@@ -247,7 +247,7 @@ export default function BusinessImpactPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                 <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `₹${v}L`} />
-                <Tooltip formatter={(v: number) => [`₹${(v * 100000).toLocaleString("en-IN")}`, "Net Year 1 impact"]} />
+                <Tooltip formatter={(v) => [`₹${(Number(v ?? 0) * 100000).toLocaleString("en-IN")}`,"Net Year 1 impact"]} />
                 <Bar dataKey="value" fill="var(--meesho-purple)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
