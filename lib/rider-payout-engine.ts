@@ -35,7 +35,7 @@ export function computePayout(rider: Rider, cfg: PayoutIncentiveConfig): PayoutB
     : 0;
   return { basePayout, performanceIncentive, routeIncentive, totalModeledPayout, payoutPerCompletedDelivery };
 }
-// lib/rider-payout-engine.ts — add this at the bottom
+// lib/rider-payout-engine.ts - add this at the bottom
 export function estimateDeliveryPayout(
   rider: Rider,
   incrementalKm: number,
@@ -48,7 +48,7 @@ export function estimateDeliveryPayout(
   return { base, performance, route, total };
 }
 
-// lib/rider-payout-engine.ts — add at the bottom
+// lib/rider-payout-engine.ts - add at the bottom
 import { RouteStepInfo } from "./rider-route-engine";
 
 export interface RoutePayoutSummary {

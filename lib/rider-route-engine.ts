@@ -1,6 +1,6 @@
 // lib/rider-route-engine.ts
 import { Rider, ParcelCandidate, RouteStop, Point, roadDistance, distanceBand, RTO_BENCHMARK, SIM_SPEED_KMH, DC_LOCATION } from "./rider-mock-data";
-// lib/rider-route-engine.ts — add this import at top
+// lib/rider-route-engine.ts - add this import at top
 import { DailyRecord, computeWeightedPerformance } from "./rider-history";
 
 export interface RouteOption {
@@ -99,7 +99,7 @@ export function evaluateRiderForParcel(rider: Rider, parcel: ParcelCandidate, hi
   return { rider, option, comparablePerformance, score, reasons: reasons.slice(0, 5), weaknesses };
 }
 
-// lib/rider-route-engine.ts — replace recommendRiders
+// lib/rider-route-engine.ts - replace recommendRiders
 export function recommendRiders(riders: Rider[], parcel: ParcelCandidate, historyMap?: Record<string, DailyRecord[]>): RiderRecommendation[] {
   return riders
     .map((r) => evaluateRiderForParcel(r, parcel, historyMap?.[r.id]))
@@ -115,7 +115,7 @@ export function dcToCustomerDistance(parcel: ParcelCandidate): { km: number; ban
 
 export { roadDistance, distanceBand, RTO_BENCHMARK };
 
-// lib/rider-route-engine.ts — add at the bottom
+// lib/rider-route-engine.ts - add at the bottom
 export interface RouteStepInfo {
   awb: string;
   label: string;

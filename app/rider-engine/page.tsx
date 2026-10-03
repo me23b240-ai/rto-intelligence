@@ -114,7 +114,7 @@ function DcOwnerView() {
                       <td className="px-4 py-2.5 text-slate-600">{dc.band} · {dc.benchmark}%</td>
                       <td className={`px-4 py-2.5 ${p.slaRemainingMin < 40 ? "text-red-600 font-medium" : "text-slate-600"}`}>{p.slaRemainingMin} min</td>
                       <td className="px-4 py-2.5 text-slate-700">{best ? `${best.rider.name} · score ${best.score}` : <span className="text-red-500">No feasible rider</span>}</td>
-                      <td className="px-4 py-2.5 text-slate-600">{best ? `+${best.option.incrementalDistanceKm.toFixed(1)} km` : "—"}</td>
+                      <td className="px-4 py-2.5 text-slate-600">{best ? `+${best.option.incrementalDistanceKm.toFixed(1)} km` : "-"}</td>
                       <td className="px-4 py-2.5">
                         <button onClick={() => setActiveAwb(p.awb)} className="text-xs font-semibold text-[var(--meesho-purple)] hover:underline">View</button>
                       </td>
@@ -130,7 +130,7 @@ function DcOwnerView() {
         </div>
       </div>
 
-      {/* Right side panel — recommendation + assign */}
+      {/* Right side panel - recommendation + assign */}
       <div className="rounded-xl border border-slate-200 bg-white p-4 lg:sticky lg:top-6">
         {!activeParcel ? (
           <p className="text-sm text-slate-400">Click "View" on a parcel to see the route-aware recommendation.</p>
@@ -143,7 +143,7 @@ function DcOwnerView() {
                 <div>DC → customer: <strong>{dcToCustomerDistance(activeParcel).km} km</strong></div>
                 <div>Case band: <strong>{dcToCustomerDistance(activeParcel).band}</strong> · Case RTO benchmark: <strong>{dcToCustomerDistance(activeParcel).benchmark}%</strong></div>
               </div>
-              <p className="text-[10px] text-slate-400 mt-1">CASE RTO-RISK BENCHMARK — not a rider-level prediction</p>
+              <p className="text-[10px] text-slate-400 mt-1">CASE RTO-RISK BENCHMARK - not a rider-level prediction</p>
             </div>
 
             {!top ? (
@@ -208,14 +208,14 @@ function DcOwnerView() {
                 )}
 
                 <details className="rounded-lg border border-slate-200 p-3">
-                  <summary className="cursor-pointer text-xs font-semibold text-slate-700">Route simulator — insertion options</summary>
+                  <summary className="cursor-pointer text-xs font-semibold text-slate-700">Route simulator - insertion options</summary>
                   <div className="mt-2 space-y-1 text-xs text-slate-600">
                     {top.rider.route.length === 0 ? (
-                      <p>Rider has no pending stops — parcel is simply added as the next stop.</p>
+                      <p>Rider has no pending stops - parcel is simply added as the next stop.</p>
                     ) : (
                       <>
                         <p>Route: DC → {top.rider.route.map((s) => s.label).join(" → ")} → <strong>{activeParcel.awb}</strong></p>
-                        <p className="font-medium text-slate-800">The engine tried every insertion position and chose position {top.option.insertAt + 1} of {top.option.newRoute.length} — lowest incremental distance.</p>
+                        <p className="font-medium text-slate-800">The engine tried every insertion position and chose position {top.option.insertAt + 1} of {top.option.newRoute.length} - lowest incremental distance.</p>
                       </>
                     )}
                   </div>
@@ -234,6 +234,7 @@ function MapView() {
   const { riders, parcels, incentives, riderHistory } = useRiderEngine();
   return <RiderMap riders={riders} parcels={parcels} incentives={incentives} riderHistory={riderHistory} />;
 }
+
 function ValmoOpsView() {
   const { riders, incentives, updateIncentives, riderHistory } = useRiderEngine();
 
@@ -307,7 +308,7 @@ function ValmoOpsView() {
           <h2 className="text-sm font-semibold text-slate-900">Case RTO-risk benchmarks by distance</h2>
           <Tag tone="purple">CASE DATA</Tag>
         </div>
-        <p className="text-xs text-slate-400 mb-3">Reference only — not a payout or incentive band</p>
+        <p className="text-xs text-slate-400 mb-3">Reference only - not a payout or incentive band</p>
         <div className="grid grid-cols-3 gap-3 text-sm">
           <div className="rounded-lg bg-slate-50 p-3"><div className="text-slate-500 text-xs">~2 km</div><div className="font-bold text-lg text-slate-900">15%</div></div>
           <div className="rounded-lg bg-slate-50 p-3"><div className="text-slate-500 text-xs">~5 km</div><div className="font-bold text-lg text-slate-900">17%</div></div>
@@ -334,7 +335,7 @@ function RiderEngineContent() {
           <div>
             <h1 className="text-xl font-bold text-slate-900">Rider Engine</h1>
             <p className="text-sm text-slate-500">Route-aware parcel allocation and rider economics for last-mile operations.</p>
-            <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 — transparent rules, not ML</span>
+            <span className="inline-block text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5 mt-2">Phase 1 - transparent rules, not ML</span>
           </div>
           <button onClick={resetDemo} className="text-xs text-slate-500 hover:text-slate-700 border border-slate-200 rounded-lg px-3 py-1.5 bg-white">Reset demo</button>
         </div>

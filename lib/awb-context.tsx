@@ -64,7 +64,7 @@ export function AwbProvider({ children }: { children: React.ReactNode }) {
       let out: AwbOutcome = r.outcome;
       if (stage === last) {
         switch (r.evaluation.decision) {
-          case "REATTEMPT": out = outcome ?? "delivered"; label = out === "delivered" ? "Delivered ✓ — attempt verified (GPS + OTP)" : "Failed again — parcel returns to the decision queue"; break;
+          case "REATTEMPT": out = outcome ?? "delivered"; label = out === "delivered" ? "Delivered ✓ - attempt verified (GPS + OTP)" : "Failed again - parcel returns to the decision queue"; break;
           case "RETURN": out = "returned"; break;
           case "REDIRECT": out = "redirected"; break;
           case "HOLD": out = "re_evaluated"; break;

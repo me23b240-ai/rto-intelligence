@@ -163,7 +163,7 @@ export function buildInitialRiders(): Rider[] {
 // ---------- Hand-authored demo parcels (for the two brief scenarios + variety) ----------
 export function buildInitialParcels(): ParcelCandidate[] {
   return [
-    // Scenario 1: A→B ≈1.8km, DC→B ≈7.2km — R07 should win over R12
+    // Scenario 1: A→B ≈1.8km, DC→B ≈7.2km - R07 should win over R12
     { awb: "AWB391", location: { x: 7.2, y: 3.6 }, zone: "Zone B", orderValue: 650, payment: "COD", addressConfidence: "high", slaRemainingMin: 300, priority: false },
 
     // Scenario for mid-route insertion beating append-at-end for R09 (near the P–Q corridor)
@@ -175,12 +175,12 @@ export function buildInitialParcels(): ParcelCandidate[] {
     // ~2km band near R15
     { awb: "AWB182", location: { x: -4, y: 2.5 }, zone: "Zone D", orderValue: 299, payment: "Prepaid", addressConfidence: "high", slaRemainingMin: 200, priority: false },
 
-    // Tight SLA — should force allocation away from the "best" but slower rider
+    // Tight SLA - should force allocation away from the "best" but slower rider
     { awb: "AWB560", location: { x: 1, y: 0.5 }, zone: "Zone A", orderValue: 899, payment: "COD", addressConfidence: "low", slaRemainingMin: 25, priority: true },
   ];
 }
 
-// lib/rider-mock-data.ts — replace seededExtraParcels() entirely
+// lib/rider-mock-data.ts - replace seededExtraParcels() entirely
 export function seededExtraParcels(count: number, seed = 77, avoidPoints: Point[] = []): ParcelCandidate[] {
   const rng = mulberry32(seed);
   const out: ParcelCandidate[] = [];
@@ -212,11 +212,11 @@ export function seededExtraParcels(count: number, seed = 77, avoidPoints: Point[
   return out;
 }
 
-// lib/rider-mock-data.ts — add this block
+// lib/rider-mock-data.ts - add this block
 export const AREA_NAMES = ["Koramangala", "Indiranagar", "HSR Layout", "Whitefield", "Jayanagar", "BTM Layout", "Marathahalli", "Electronic City"];
 
 export function nameForLocation(p: Point): string {
-  // Deterministic name per rounded coordinate, just for display flavor — not a real geocoded address.
+  // Deterministic name per rounded coordinate, just for display flavor - not a real geocoded address.
   const key = Math.round(p.x * 3) + Math.round(p.y * 7) * 13;
   const idx = ((key % AREA_NAMES.length) + AREA_NAMES.length) % AREA_NAMES.length;
   return AREA_NAMES[idx];

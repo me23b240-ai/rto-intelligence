@@ -16,8 +16,8 @@ export function RiderDataTable({ riders, riderHistory }: Props) {
     <div className="space-y-4">
       <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
         <div className="px-4 py-3 border-b border-slate-100">
-          <h2 className="text-sm font-semibold text-slate-900">Full rider dataset — 90-day recency-weighted summary</h2>
-          <p className="text-xs text-slate-400 mt-0.5">SIMULATED — stands in for a real Valmo 90-day delivery log. Weighting: last 30 days 50%, days 31–60 at 30%, days 61–90 at 20%.</p>
+          <h2 className="text-sm font-semibold text-slate-900">Full rider dataset - 90-day recency-weighted summary</h2>
+          <p className="text-xs text-slate-400 mt-0.5">SIMULATED - stands in for a real Valmo 90-day delivery log. Weighting: last 30 days 50%, days 31–60 at 30%, days 61–90 at 20%.</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
@@ -76,7 +76,7 @@ function RawLogView({ riderName, history }: { riderName: string; history: DailyR
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-4">
-      <h3 className="text-sm font-semibold text-slate-900 mb-1">{riderName} — period breakdown</h3>
+      <h3 className="text-sm font-semibold text-slate-900 mb-1">{riderName} - period breakdown</h3>
       <p className="text-xs text-slate-400 mb-3">Each row is a 30-day bucket, used to compute the recency-weighted score above.</p>
       <table className="w-full text-xs mb-4">
         <thead>
@@ -126,13 +126,13 @@ function RawLogView({ riderName, history }: { riderName: string; history: DailyR
                   <td className="px-3 py-1">{d.band}</td>
                   <td className="px-3 py-1">{d.codAttempted ? "COD" : "Prepaid"}</td>
                   <td className={`px-3 py-1 font-semibold ${d.delivered ? "text-green-600" : "text-red-600"}`}>{d.delivered ? "Yes" : "No"}</td>
-                  <td className="px-3 py-1">{d.delivered ? (d.onTime ? "Yes" : "No") : "—"}</td>
+                  <td className="px-3 py-1">{d.delivered ? (d.onTime ? "Yes" : "No") : "-"}</td>
                 </tr>
               ))}
           </tbody>
         </table>
       </div>
-      <p className="text-[10px] text-slate-400 mt-2">SIMULATED 90-DAY LOG — {history.length} total delivery records for this rider</p>
+      <p className="text-[10px] text-slate-400 mt-2">SIMULATED 90-DAY LOG - {history.length} total delivery records for this rider</p>
     </div>
   );
 }

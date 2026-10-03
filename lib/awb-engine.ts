@@ -124,7 +124,7 @@ export function evaluate(
   const unverified = parcel.attemptsLogged - parcel.attemptsVerified;
   const historyLine = parcel.prevOrders >= 1
     ? `${parcel.prevDelivered}/${parcel.prevOrders} previous orders delivered${parcel.prevRefused ? `, ${parcel.prevRefused} refused` : ""}`
-    : "New customer — no delivery history";
+    : "New customer - no delivery history";
   const addrText = ctx.addressConfirmed ? "confirmed during the hold" : parcel.addressConfidence ?? "unavailable";
   const attemptsLine = `${parcel.attemptsVerified} of ${parcel.maxAttempts} verified attempts used` +
     (unverified > 0 ? ` (${unverified} logged attempt${unverified > 1 ? "s" : ""} had no GPS/OTP proof and don't count)` : "");
@@ -133,7 +133,7 @@ export function evaluate(
     reasonText, attemptsLine, historyLine, `Address confidence: ${addrText}`,
     `${parcel.payment} · ₹${parcel.orderValue} · ${parcel.category}`,
     `Seller SLA: ${parcel.slaHoursLeft} h left`,
-    `Recovery likelihood: ${likelihood} (prototype rules — assumption)`,
+    `Recovery likelihood: ${likelihood} (prototype rules - assumption)`,
   ];
 
   const flow = (decision: string, nextEvent: string, nextNode: string, outcome: string): AwbFlowStep[] => [
@@ -154,14 +154,14 @@ export function evaluate(
     const rb = reviewBy();
     return {
       decision: "MANUAL_REVIEW",
-      headline: `Send AWB ${parcel.awb} to supervisor review — do not dispatch or return`,
+      headline: `Send AWB ${parcel.awb} to supervisor review - do not dispatch or return`,
       execution: rb !== null ? `Review by ${fmtTime(rb)}` : "Supervisor review",
       details: [{ label: "Reason", value: reason }, ...(rb !== null ? [{ label: "Review before", value: fmtTime(rb) }] : [])],
       doNot: "Do NOT dispatch, return or hold this parcel until it is reviewed.",
       executeByMin: rb,
       why: [reason, "The engine does not force a decision when data is missing or the options are too close to call"],
       factors: baseFactors, recoveryLikelihood: likelihood, confidence: "Low", manualReviewReason: reason,
-      flow: flow("Manual review — no automatic action", rb !== null ? `Supervisor reviews before ${fmtTime(rb)}` : "Supervisor reviews at the next cutoff", "Supervisor decision", "Decision recorded and the parcel released to a normal action"),
+      flow: flow("Manual review - no automatic action", rb !== null ? `Supervisor reviews before ${fmtTime(rb)}` : "Supervisor reviews at the next cutoff", "Supervisor decision", "Decision recorded and the parcel released to a normal action"),
       lifecycle: ["Sent for manual review", "Reviewed by supervisor"],
       options: opts, logisticsCost: null, savings: null, recoveredValue: null, successProbability: p,
     };
@@ -242,7 +242,7 @@ export function evaluate(
 
   if (re) { const logistics = s.reattemptCost + (1 - p) * R; cands.push({ key: "REATTEMPT", label: "Reattempt delivery", cost: logistics - p * V, logistics }); }
   if (ret) {
-    const label = ret.method === "consolidate" ? `Return — consolidate on ${ret.target.movementId}` : ret.method === "priority" ? `Return — priority movement ${ret.target.movementId}` : "Return — standard return run";
+    const label = ret.method === "consolidate" ? `Return - consolidate on ${ret.target.movementId}` : ret.method === "priority" ? `Return - priority movement ${ret.target.movementId}` : "Return - standard return run";
     cands.push({ key: "RETURN", label, cost: ret.cost, logistics: ret.cost });
   }
   const pA = s.pAfterAddressFix / 100;
@@ -274,7 +274,7 @@ export function evaluate(
 
   const optionsOut: AwbOptionCost[] = cands.map((c) => ({ label: c.label, cost: Math.round(c.cost * 10) / 10, chosen: c.key === best.key }));
 
-  if (confidence === "Low") return manual(`The top two options are within ₹${Math.round(margin)} of each other — low confidence`, optionsOut.map((o) => ({ ...o, chosen: false })));
+  if (confidence === "Low") return manual(`The top two options are within ₹${Math.round(margin)} of each other - low confidence`, optionsOut.map((o) => ({ ...o, chosen: false })));
 
   const savings = Math.round(s.standardReverseCost - best.logistics);
 
@@ -292,7 +292,7 @@ export function evaluate(
       why: why.slice(0, 5),
       factors: [...baseFactors, `Delivery batch ${re.id} has room (${t.used}/${t.capacity} loaded)`],
       recoveryLikelihood: likelihood, confidence,
-      flow: flow(`Reattempt — ${re.label}`, `Batch leaves ${fmtTime(re.departureMin)}`, "Customer address", `Attempt #${attemptNo} recorded with GPS + OTP proof`),
+      flow: flow(`Reattempt - ${re.label}`, `Batch leaves ${fmtTime(re.departureMin)}`, "Customer address", `Attempt #${attemptNo} recorded with GPS + OTP proof`),
       lifecycle: ["Batched for reattempt", "Out for delivery", "Delivery outcome recorded"],
       options: optionsOut, logisticsCost: best.logistics, savings, recoveredValue: Math.round(p * V), successProbability: p,
     };
@@ -309,10 +309,10 @@ export function evaluate(
     why.push(reasonText);
     if (parcel.prevRefused >= 1) why.push(historyLine);
     if (likelihood !== "High") why.push(`${likelihood} recovery likelihood`);
-    if (ret.method === "priority") why.push(slaTight ? `Seller SLA has ${parcel.slaHoursLeft} h left — standard movements leave too late` : "High-value parcel qualifies for a priority movement");
+    if (ret.method === "priority") why.push(slaTight ? `Seller SLA has ${parcel.slaHoursLeft} h left - standard movements leave too late` : "High-value parcel qualifies for a priority movement");
     if (ret.method === "consolidate") why.push(`${t.movementId} leaves ${fmtTime(t.departureMin)} with room (${t.used}/${t.capacity})`);
-    if (isStd) why.push(`No scheduled movement to ${t.destination} — a dedicated run is needed`);
-    if (fullMovs.length) why.push(`${fullMovs.map((m) => m.id).join(", ")} ${fullMovs.length > 1 ? "are" : "is"} full — next available movement used`);
+    if (isStd) why.push(`No scheduled movement to ${t.destination} - a dedicated run is needed`);
+    if (fullMovs.length) why.push(`${fullMovs.map((m) => m.id).join(", ")} ${fullMovs.length > 1 ? "are" : "is"} full - next available movement used`);
 
     return {
       decision: "RETURN", method: ret.method, headline,
@@ -329,7 +329,7 @@ export function evaluate(
       why: why.slice(0, 5),
       factors: [...baseFactors, isStd ? "No scheduled movement to this seller hub" : `Movement ${t.movementId} has room`],
       recoveryLikelihood: likelihood, confidence,
-      flow: flow(`Return — ${ret.method === "consolidate" ? `consolidate with ${t.movementId}` : ret.method === "priority" ? `priority movement ${t.movementId}` : "standard return run"}`, `Leaves ${parcel.currentDc} — ${fmtTime(t.departureMin)}`, t.destination, "Seller receives the parcel"),
+      flow: flow(`Return - ${ret.method === "consolidate" ? `consolidate with ${t.movementId}` : ret.method === "priority" ? `priority movement ${t.movementId}` : "standard return run"}`, `Leaves ${parcel.currentDc} - ${fmtTime(t.departureMin)}`, t.destination, "Seller receives the parcel"),
       lifecycle: [isStd ? "Released to standard return run" : `Loaded on ${t.movementId}`, `In transit to ${t.destination}`, `Received at ${t.destination}`, "Returned to seller"],
       options: optionsOut, logisticsCost: best.logistics, savings, recoveredValue: null, successProbability: p,
     };
@@ -337,7 +337,7 @@ export function evaluate(
 
   if (best.key === "HOLD_ADDR") {
     const until = nowMin + s.addressHoldHours * 60;
-    const trigger = `Address (landmark / pin) confirmed, or ${fmtTime(until)} — whichever comes first`;
+    const trigger = `Address (landmark / pin) confirmed, or ${fmtTime(until)} - whichever comes first`;
     return {
       decision: "HOLD",
       headline: `Shelve AWB ${parcel.awb} on the Hold shelf until ${fmtTime(until)}`,
@@ -345,11 +345,11 @@ export function evaluate(
       details: [{ label: "Hold until", value: fmtTime(until) }, { label: "Re-evaluation trigger", value: trigger }, { label: "Then", value: "The engine re-evaluates automatically" }],
       doNot: "Do NOT dispatch or return this parcel before then.",
       executeByMin: null, holdUntilMin: until, holdKind: "address", reevaluationTrigger: trigger,
-      why: [`Address confidence is ${parcel.addressConfidence ?? "unavailable"} — another attempt would likely fail`, `Confirming the address costs about ₹${s.addressConfirmCost} versus ₹${s.reattemptCost} for a wasted attempt`, `${attemptsRemaining} verified attempt${attemptsRemaining > 1 ? "s" : ""} still available`, `Re-evaluated automatically at ${fmtTime(until)}`],
+      why: [`Address confidence is ${parcel.addressConfidence ?? "unavailable"} - another attempt would likely fail`, `Confirming the address costs about ₹${s.addressConfirmCost} versus ₹${s.reattemptCost} for a wasted attempt`, `${attemptsRemaining} verified attempt${attemptsRemaining > 1 ? "s" : ""} still available`, `Re-evaluated automatically at ${fmtTime(until)}`],
       factors: [...baseFactors, `Hold cost ≈ ₹${(s.holdCostPerHour * s.addressHoldHours).toFixed(1)}`],
       recoveryLikelihood: likelihood, confidence,
       flow: flow("Hold on shelf while the address is confirmed", trigger, `Automatic re-evaluation at ${fmtTime(until)}`, "New decision issued (reattempt or return)"),
-      lifecycle: [`On hold shelf until ${fmtTime(until)}`, "Hold ended — re-evaluated"],
+      lifecycle: [`On hold shelf until ${fmtTime(until)}`, "Hold ended - re-evaluated"],
       options: optionsOut, logisticsCost: best.logistics, savings, recoveredValue: Math.round(pA * V), successProbability: pA,
     };
   }
@@ -364,11 +364,11 @@ export function evaluate(
       details: [{ label: "Hold until", value: fmtTime(until) }, { label: "Re-evaluation trigger", value: trigger }, { label: "Then", value: `The engine re-evaluates and can consolidate onto ${holdMove.id}` }],
       doNot: "Do NOT dispatch or return this parcel before then.",
       executeByMin: null, holdUntilMin: until, holdKind: "movement", reevaluationTrigger: trigger,
-      why: [`No scheduled return movement to ${dest} is open right now — only a dedicated run (₹${s.standardReverseCost}) is available`, `${holdMove.id} publishes at ${fmtTime(until)} and leaves ${fmtTime(holdMove.departureMin)}, at about ₹${s.consolidatedReturnCost}`, "The seller accepts a delayed return pickup", `Re-evaluated automatically at ${fmtTime(until)}`],
+      why: [`No scheduled return movement to ${dest} is open right now - only a dedicated run (₹${s.standardReverseCost}) is available`, `${holdMove.id} publishes at ${fmtTime(until)} and leaves ${fmtTime(holdMove.departureMin)}, at about ₹${s.consolidatedReturnCost}`, "The seller accepts a delayed return pickup", `Re-evaluated automatically at ${fmtTime(until)}`],
       factors: [...baseFactors, `Hold cost ≈ ₹${(s.holdCostPerHour * hoursTo(until)).toFixed(1)}`],
       recoveryLikelihood: likelihood, confidence,
       flow: flow("Hold on shelf until a cheaper movement opens", `${holdMove.id} gets published at ${fmtTime(until)}`, "Automatic re-evaluation at that time", `Parcel consolidated into ${holdMove.id} (leaves ${fmtTime(holdMove.departureMin)})`),
-      lifecycle: [`On hold shelf until ${fmtTime(until)}`, "Hold ended — re-evaluated"],
+      lifecycle: [`On hold shelf until ${fmtTime(until)}`, "Hold ended - re-evaluated"],
       options: optionsOut, logisticsCost: best.logistics, savings, recoveredValue: null, successProbability: p,
     };
   }

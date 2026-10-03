@@ -140,7 +140,7 @@ export function RiderMap({ riders, parcels, incentives, riderHistory }: Props) {
 
   return (
     <div className="grid lg:grid-cols-[260px_1fr_320px] gap-4 items-start">
-      {/* LEFT — rider list + unassigned parcels */}
+      {/* LEFT - rider list + unassigned parcels */}
       <div className="space-y-4">
         <div className="rounded-xl border border-slate-200 bg-white p-3">
           <div className="flex items-center justify-between mb-2 px-1">
@@ -186,7 +186,7 @@ export function RiderMap({ riders, parcels, incentives, riderHistory }: Props) {
         )}
       </div>
 
-      {/* CENTER — map */}
+      {/* CENTER - map */}
       <div className="rounded-xl border border-slate-200 bg-white p-3 relative">
         <div className="absolute top-5 left-5 z-10 flex items-center gap-1.5 bg-white/90 backdrop-blur rounded-full border border-slate-200 px-3 py-1 text-[11px] font-medium text-slate-500">
           ℹ️ For visual reference only
@@ -294,7 +294,7 @@ export function RiderMap({ riders, parcels, incentives, riderHistory }: Props) {
         </div>
       </div>
 
-      {/* RIGHT — detail panel */}
+      {/* RIGHT - detail panel */}
       <div className="rounded-xl border border-slate-200 bg-white p-4">
         {!focus ? (
           <p className="text-sm text-slate-400">Click a rider to see their route and performance.</p>
@@ -370,7 +370,7 @@ export function RiderMap({ riders, parcels, incentives, riderHistory }: Props) {
                 <div className="space-y-1 text-xs flex-1">
                   <div className="flex justify-between"><span className="text-slate-500">Success Rate</span><span className="font-semibold text-slate-800">{Math.round(focus.perf.overall * 100)}%</span></div>
                   <div className="flex justify-between"><span className="text-slate-500">COD Success</span><span className="font-semibold text-slate-800">{Math.round(focus.perf.codRate * 100)}%</span></div>
-                  <div className="flex justify-between"><span className="text-slate-500">Avg Delivery Time</span><span className="font-semibold text-slate-800">{focus.avgDeliveryHrs || "—"} hrs</span></div>
+                  <div className="flex justify-between"><span className="text-slate-500">Avg Delivery Time</span><span className="font-semibold text-slate-800">{focus.avgDeliveryHrs || "-"} hrs</span></div>
                 </div>
               </div>
               {showPerfDetails && (

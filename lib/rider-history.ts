@@ -52,7 +52,7 @@ function hashStr(s: string): number {
   return h >>> 0;
 }
 
-/** SIMULATED — stands in for a real 90-day Valmo delivery log, per rider. */
+/** SIMULATED - stands in for a real 90-day Valmo delivery log, per rider. */
 export function generateRiderHistory(riderId: string, baseSuccessRate: number): DailyRecord[] {
   const rng = mulberry32(hashStr(riderId));
   const records: DailyRecord[] = [];

@@ -35,7 +35,7 @@ export function RiderPerformancePanel({ history }: { history: DailyRecord[] }) {
         <div className="rounded bg-slate-50 p-1.5"><div className="text-slate-400">COD success (weighted)</div><div className="font-semibold text-slate-800">{Math.round(perf.codRate * 100)}%</div></div>
         <div className="rounded bg-slate-50 p-1.5"><div className="text-slate-400">Metrics tracked</div><div className="font-semibold text-slate-800">zone, distance band, COD, on-time</div></div>
       </div>
-      <p className="text-[10px] text-slate-400 mt-2">SIMULATED 90-DAY LOG — stands in for a real Valmo delivery history</p>
+      <p className="text-[10px] text-slate-400 mt-2">SIMULATED 90-DAY LOG - stands in for a real Valmo delivery history</p>
     </div>
   );
 }

@@ -17,11 +17,11 @@ const BADGE: Record<AwbDecision, string> = {
   MANUAL_REVIEW: "bg-purple-50 text-purple-700 border-purple-200",
 };
 const STYLE: Record<AwbDecision, { box: string; chip: string; emoji: string; word: string; confirm: string }> = {
-  REATTEMPT: { box: "border-green-300 bg-green-50", chip: "bg-green-600", emoji: "🟢", word: "REATTEMPT", confirm: "Confirm — parcel batched for reattempt" },
-  RETURN: { box: "border-red-300 bg-red-50", chip: "bg-red-600", emoji: "🔴", word: "RETURN", confirm: "Confirm — parcel loaded for return" },
-  HOLD: { box: "border-amber-300 bg-amber-50", chip: "bg-amber-500", emoji: "🟡", word: "HOLD", confirm: "Confirm — parcel shelved on hold" },
-  REDIRECT: { box: "border-blue-300 bg-blue-50", chip: "bg-blue-600", emoji: "🔵", word: "REDIRECT", confirm: "Confirm — parcel loaded for transfer" },
-  MANUAL_REVIEW: { box: "border-purple-300 bg-purple-50", chip: "bg-[var(--meesho-purple)]", emoji: "⚠️", word: "MANUAL REVIEW", confirm: "Confirm — sent to supervisor review" },
+  REATTEMPT: { box: "border-green-300 bg-green-50", chip: "bg-green-600", emoji: "🟢", word: "REATTEMPT", confirm: "Confirm - parcel batched for reattempt" },
+  RETURN: { box: "border-red-300 bg-red-50", chip: "bg-red-600", emoji: "🔴", word: "RETURN", confirm: "Confirm - parcel loaded for return" },
+  HOLD: { box: "border-amber-300 bg-amber-50", chip: "bg-amber-500", emoji: "🟡", word: "HOLD", confirm: "Confirm - parcel shelved on hold" },
+  REDIRECT: { box: "border-blue-300 bg-blue-50", chip: "bg-blue-600", emoji: "🔵", word: "REDIRECT", confirm: "Confirm - parcel loaded for transfer" },
+  MANUAL_REVIEW: { box: "border-purple-300 bg-purple-50", chip: "bg-[var(--meesho-purple)]", emoji: "⚠️", word: "MANUAL REVIEW", confirm: "Confirm - sent to supervisor review" },
 };
 const OUTCOME_TEXT: Record<AwbOutcome, string> = {
   pending: "In progress", delivered: "Delivered", failed_again: "Failed again",
@@ -99,7 +99,7 @@ function AwbTerminalContent() {
           <h1 className="text-xl font-bold text-slate-900">AWB Decision Terminal</h1>
           <p className="text-sm text-slate-500">Enter AWB. Get the decision. Execute.</p>
           <div className="flex gap-2 flex-wrap mt-2">
-            <span className="text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5">Phase 1 — transparent rules, not ML</span>
+            <span className="text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5">Phase 1 - transparent rules, not ML</span>
             <span className="text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5">Simulated parcel lookup</span>
           </div>
         </div>
@@ -137,7 +137,7 @@ function AwbTerminalContent() {
           </div>
           <div className="rounded-xl border border-slate-200 bg-white p-3">
             <div className="text-[10px] uppercase tracking-wide text-slate-400">Reattempts delivered</div>
-            <div className="text-xl font-bold text-slate-900">{reattemptsClosed.length ? `${reattemptsDelivered}/${reattemptsClosed.length}` : "—"}</div>
+            <div className="text-xl font-bold text-slate-900">{reattemptsClosed.length ? `${reattemptsDelivered}/${reattemptsClosed.length}` : "-"}</div>
           </div>
         </div>
 
@@ -148,7 +148,7 @@ function AwbTerminalContent() {
                 <div className="rounded-xl border border-slate-200 bg-white p-4">
                   <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
                     <div><span className="text-xs text-slate-400 mr-2">AWB</span><span className="font-mono text-base font-bold text-slate-900">{active.parcel.awb}</span></div>
-                    <span className="text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5">Simulated lookup — auto-populated</span>
+                    <span className="text-[11px] text-slate-400 bg-slate-100 rounded-full px-2.5 py-0.5">Simulated lookup - auto-populated</span>
                   </div>
                   <dl className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2">
                     {[
@@ -222,7 +222,7 @@ function AwbTerminalContent() {
                   </button>
                 ) : (
                   <div className="rounded-xl border border-green-200 bg-green-50 p-4">
-                    <div className="text-sm font-semibold text-green-800">✓ Action confirmed — AWB state updated</div>
+                    <div className="text-sm font-semibold text-green-800">✓ Action confirmed - AWB state updated</div>
                     <ol className="mt-3 space-y-1.5">
                       {active.timeline.map((e, i) => (
                         <li key={i} className="flex gap-2 text-xs text-slate-700">
@@ -243,7 +243,7 @@ function AwbTerminalContent() {
                       </div>
                     )}
                     {active.stage >= active.evaluation.lifecycle.length - 1 && (
-                      <div className="mt-3 text-xs text-slate-600">Outcome recorded: <strong>{OUTCOME_TEXT[active.outcome]}</strong> — stored for later recalibration.</div>
+                      <div className="mt-3 text-xs text-slate-600">Outcome recorded: <strong>{OUTCOME_TEXT[active.outcome]}</strong> - stored for later recalibration.</div>
                     )}
                   </div>
                 )}
