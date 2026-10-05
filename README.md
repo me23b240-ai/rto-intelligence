@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meesho Logistics System - Delivery Recovery OS
 
-## Getting Started
+A prototype suite of three operational decision-support tools built for the Meesho DICE Challenge Season 3, addressing Return-to-Origin (RTO) at different points in the delivery lifecycle:
 
-First, run the development server:
+- **AWB Decision Terminal** - enter a failed-delivery AWB and get one clear operational instruction (reattempt, hold, redirect, or return), with the exact movement, deadline, and reasoning behind it. Covers post-RTO value recovery.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Rider Engine** - route-aware parcel-to-rider allocation and payout modeling, backed by 90-day recency-weighted rider performance scoring. Covers RTO prevention through smarter allocation.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Business Impact** - the full finance model behind both tools, with RTO prevention and post-RTO value recovery kept as separate, evidence-tagged KPI families, including payback period and scale projections.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+All three are built as a transparent, rules-based system (Phase 1 - no ML), with every assumption explicitly tagged by evidence type (case data, calculated, model assumption, hypothesis, or simulated) so a reader can tell what's verified versus illustrative at a glance.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Team
 
-## Learn More
+**Team BusiKrackers** - IIT Madras
 
-To learn more about Next.js, take a look at the following resources:
+Poras Wadhai · Priyanka Dosibhatla · Dheeraj Naidu
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Reference materials
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Presentation deck:** [View on Canva]([https://canva.link/85jvwxwpkjnf9j1](https://canva.link/85jvwxwpkjnf9j1))
 
-## Deploy on Vercel
+- **Financial model:** [Meesho_RTO_Model_Final — Busikrakers.xlsx]([https://docs.google.com/spreadsheets/d/1ayoy1XpLwyWTCOsZeL_ZnFg9fGMvasAW/edit?usp=sharing&ouid=108369363448375493202&rtpof=true&sd=true](https://docs.google.com/spreadsheets/d/1ayoy1XpLwyWTCOsZeL_ZnFg9fGMvasAW/edit?usp=sharing&ouid=108369363448375493202&rtpof=true&sd=true))
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Primary research — Customers:** [Order cancelled at door? Tell us why 🤫 (Responses)]([https://docs.google.com/spreadsheets/d/1dWnHw5E2chgKHu-kyQt6HNumiuq4WG7jbnt68GZdLX8/edit?resourcekey=&gid=519030697#gid=519030697](https://docs.google.com/spreadsheets/d/1dWnHw5E2chgKHu-kyQt6HNumiuq4WG7jbnt68GZdLX8/edit?resourcekey=&gid=519030697#gid=519030697))
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Primary research — Sellers:** [E-commerce Seller Delivery & RTO Survey (Responses)]([https://docs.google.com/spreadsheets/d/1ky3t1b2y2m9xEnByvckpDZjmbWnqm5xe4nqhYRYy-0g/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1ky3t1b2y2m9xEnByvckpDZjmbWnqm5xe4nqhYRYy-0g/edit?usp=sharing))
+
+- **Primary research — Riders:** [Delivery Rider Experience — Failed Deliveries & RTO Survey (Responses)]([https://docs.google.com/spreadsheets/d/1dH89IqB067JKC0Uf47DEjv4mp3ksZXiqoNaOvv9Jy84/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1dH89IqB067JKC0Uf47DEjv4mp3ksZXiqoNaOvv9Jy84/edit?usp=sharing))
+
+## Tech stack
+
+Next.js (App Router) · TypeScript · Tailwind CSS · Recharts · deployed on Vercel
