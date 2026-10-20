@@ -1,12 +1,16 @@
 // components/finance-tag.tsx
-export type FinanceTagType = "case" | "calculated" | "model" | "hypothesis" | "assumption" | "illustrative" | "public" | "team" | "simulated";
+export type FinanceTagType =
+  | "case" | "caseAssumption" | "calculated" | "model" | "hypothesis"
+  | "assumption" | "illustrative" | "public" | "team" | "simulated";
 
 const LABEL: Record<FinanceTagType, string> = {
-  case: "CASE-GIVEN", calculated: "CALCULATED", model: "MODEL ASSUMPTION", hypothesis: "HYPOTHESIS",
-  assumption: "ASSUMPTION", illustrative: "ILLUSTRATIVE", public: "PUBLIC", team: "TEAM-PROVIDED", simulated: "SIMULATED",
+  case: "CASE-GIVEN", caseAssumption: "CASE ASSUMPTION", calculated: "CALCULATED",
+  model: "MODEL ASSUMPTION", hypothesis: "HYPOTHESIS", assumption: "ASSUMPTION",
+  illustrative: "ILLUSTRATIVE", public: "PUBLIC", team: "TEAM-RESEARCHED", simulated: "SIMULATED",
 };
 const STYLE: Record<FinanceTagType, string> = {
   case: "bg-purple-50 text-purple-700 border-purple-200",
+  caseAssumption: "bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200",
   calculated: "bg-slate-100 text-slate-600 border-slate-200",
   model: "bg-amber-50 text-amber-700 border-amber-200",
   hypothesis: "bg-orange-50 text-orange-700 border-orange-200",
@@ -18,5 +22,9 @@ const STYLE: Record<FinanceTagType, string> = {
 };
 
 export function FinanceTag({ type }: { type: FinanceTagType }) {
-  return <span className={`inline-block text-[9.5px] font-semibold tracking-wide border rounded px-1.5 py-0.5 ml-1.5 ${STYLE[type]}`}>{LABEL[type]}</span>;
+  return (
+    <span className={`inline-block text-[9.5px] font-semibold tracking-wide border rounded px-1.5 py-0.5 ml-1.5 ${STYLE[type]}`}>
+      {LABEL[type]}
+    </span>
+  );
 }
