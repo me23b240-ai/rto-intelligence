@@ -20,13 +20,13 @@ Poras Wadhai · Priyanka Dosibhatla · Dheeraj Naidu
 
 - **Presentation deck:** [View on Canva]([https://canva.link/85jvwxwpkjnf9j1](https://canva.link/85jvwxwpkjnf9j1))
 
-- **Financial model:** [Meesho_RTO_Model_Final — Busikrakers.xlsx]([https://docs.google.com/spreadsheets/d/1ayoy1XpLwyWTCOsZeL_ZnFg9fGMvasAW/edit?usp=sharing&ouid=108369363448375493202&rtpof=true&sd=true](https://docs.google.com/spreadsheets/d/1ayoy1XpLwyWTCOsZeL_ZnFg9fGMvasAW/edit?usp=sharing&ouid=108369363448375493202&rtpof=true&sd=true))
+- **Financial model:** [Meesho_RTO_Model_Final - Busikrakers.xlsx]([https://docs.google.com/spreadsheets/d/1ayoy1XpLwyWTCOsZeL_ZnFg9fGMvasAW/edit?usp=sharing&ouid=108369363448375493202&rtpof=true&sd=true](https://docs.google.com/spreadsheets/d/1ayoy1XpLwyWTCOsZeL_ZnFg9fGMvasAW/edit?usp=sharing&ouid=108369363448375493202&rtpof=true&sd=true))
 
-- **Primary research — Customers:** [Order cancelled at door? Tell us why 🤫 (Responses)]([https://docs.google.com/spreadsheets/d/1dWnHw5E2chgKHu-kyQt6HNumiuq4WG7jbnt68GZdLX8/edit?resourcekey=&gid=519030697#gid=519030697](https://docs.google.com/spreadsheets/d/1dWnHw5E2chgKHu-kyQt6HNumiuq4WG7jbnt68GZdLX8/edit?resourcekey=&gid=519030697#gid=519030697))
+- **Primary research - Customers:** [Order cancelled at door? Tell us why 🤫 (Responses)]([https://docs.google.com/spreadsheets/d/1dWnHw5E2chgKHu-kyQt6HNumiuq4WG7jbnt68GZdLX8/edit?resourcekey=&gid=519030697#gid=519030697](https://docs.google.com/spreadsheets/d/1dWnHw5E2chgKHu-kyQt6HNumiuq4WG7jbnt68GZdLX8/edit?resourcekey=&gid=519030697#gid=519030697))
 
-- **Primary research — Sellers:** [E-commerce Seller Delivery & RTO Survey (Responses)]([https://docs.google.com/spreadsheets/d/1ky3t1b2y2m9xEnByvckpDZjmbWnqm5xe4nqhYRYy-0g/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1ky3t1b2y2m9xEnByvckpDZjmbWnqm5xe4nqhYRYy-0g/edit?usp=sharing))
+- **Primary research - Sellers:** [E-commerce Seller Delivery & RTO Survey (Responses)]([https://docs.google.com/spreadsheets/d/1ky3t1b2y2m9xEnByvckpDZjmbWnqm5xe4nqhYRYy-0g/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1ky3t1b2y2m9xEnByvckpDZjmbWnqm5xe4nqhYRYy-0g/edit?usp=sharing))
 
-- **Primary research — Riders:** [Delivery Rider Experience — Failed Deliveries & RTO Survey (Responses)]([https://docs.google.com/spreadsheets/d/1dH89IqB067JKC0Uf47DEjv4mp3ksZXiqoNaOvv9Jy84/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1dH89IqB067JKC0Uf47DEjv4mp3ksZXiqoNaOvv9Jy84/edit?usp=sharing))
+- **Primary research - Riders:** [Delivery Rider Experience - Failed Deliveries & RTO Survey (Responses)]([https://docs.google.com/spreadsheets/d/1dH89IqB067JKC0Uf47DEjv4mp3ksZXiqoNaOvv9Jy84/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1dH89IqB067JKC0Uf47DEjv4mp3ksZXiqoNaOvv9Jy84/edit?usp=sharing))
 
 ## Tech stack
 

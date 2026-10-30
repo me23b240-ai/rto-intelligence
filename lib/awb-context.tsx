@@ -12,7 +12,21 @@ export interface AwbDecisionRecord {
   operator: string; stage: number; outcome: AwbOutcome; timeline: AwbTimelineEvent[];
 }
 
-const KEY = "dro-awb-records";
+const KEY = "dro-awb-records-v2";
+const VALID_DECISIONS = ["REATTEMPT", "HOLD", "REDIRECT", "RETURN", "MANUAL_REVIEW"];
+
+// A saved record is only usable if it has the shape the page expects.
+function isUsable(r: unknown): r is AwbDecisionRecord {
+  const rec = r as AwbDecisionRecord | null;
+  return (
+    !!rec &&
+    !!rec.parcel &&
+    !!rec.evaluation &&
+    VALID_DECISIONS.includes(rec.evaluation.decision) &&
+    Array.isArray(rec.evaluation.lifecycle) &&
+    Array.isArray(rec.timeline)
+  );
+}
 
 interface Ctx {
   records: AwbDecisionRecord[];
@@ -31,15 +45,26 @@ export function AwbProvider({ children }: { children: React.ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    try { const saved = localStorage.getItem(KEY); if (saved) setRecords(JSON.parse(saved)); } catch { /* ignore */ }
+    try {
+      const saved = localStorage.getItem(KEY);
+      if (saved) {
+        const parsed: unknown = JSON.parse(saved);
+        if (Array.isArray(parsed)) setRecords(parsed.filter(isUsable));
+      }
+    } catch { /* ignore corrupt storage */ }
     setHydrated(true);
   }, []);
 
-  useEffect(() => { if (hydrated) localStorage.setItem(KEY, JSON.stringify(records.slice(0, 200))); }, [records, hydrated]);
+  useEffect(() => {
+    if (hydrated) localStorage.setItem(KEY, JSON.stringify(records.slice(0, 200)));
+  }, [records, hydrated]);
 
   const fills = useMemo(() => {
     const f: Record<string, number> = {};
-    for (const r of records) { const id = r.confirmed ? r.evaluation.target?.movementId : undefined; if (id) f[id] = (f[id] ?? 0) + 1; }
+    for (const r of records) {
+      const id = r.confirmed ? r.evaluation.target?.movementId : undefined;
+      if (id) f[id] = (f[id] ?? 0) + 1;
+    }
     return f;
   }, [records]);
 
@@ -50,7 +75,10 @@ export function AwbProvider({ children }: { children: React.ReactNode }) {
     setRecords((prev) => prev.map((r) => {
       if (r.id !== id || r.confirmed) return r;
       const now = Date.now();
-      return { ...r, confirmed: true, confirmedAt: now, operator, stage: 0, timeline: [...r.timeline, { at: now, label: `Action confirmed by ${operator}` }, { at: now, label: r.evaluation.lifecycle[0] }] };
+      return {
+        ...r, confirmed: true, confirmedAt: now, operator, stage: 0,
+        timeline: [...r.timeline, { at: now, label: `Action confirmed by ${operator}` }, { at: now, label: r.evaluation.lifecycle[0] }],
+      };
     }));
   }
 
@@ -64,7 +92,10 @@ export function AwbProvider({ children }: { children: React.ReactNode }) {
       let out: AwbOutcome = r.outcome;
       if (stage === last) {
         switch (r.evaluation.decision) {
-          case "REATTEMPT": out = outcome ?? "delivered"; label = out === "delivered" ? "Delivered ✓ - attempt verified (GPS + OTP)" : "Failed again - parcel returns to the decision queue"; break;
+          case "REATTEMPT":
+            out = outcome ?? "delivered";
+            label = out === "delivered" ? "Delivered ✓ (attempt verified with GPS + OTP)" : "Failed again, parcel returns to the decision queue";
+            break;
           case "RETURN": out = "returned"; break;
           case "REDIRECT": out = "redirected"; break;
           case "HOLD": out = "re_evaluated"; break;

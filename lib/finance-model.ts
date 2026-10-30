@@ -12,7 +12,17 @@ export const SCENARIO_LABEL: Record<Scenario, string> = {
 export const SCENARIO_PP: Record<Scenario, number> = {
   conservative: 0.0074, base: 0.0147, aggressiveMid: 0.0368, aggressive: 0.0735,
 };
-
+// Liquidation beats normal reverse when resale rate < recovery% + (normal-reverse overhead − liquidation overhead) / value
+//   normal reverse overhead = 120 + 8 + 1.5×3 = 132.5     liquidation overhead = 25 + 8 + 1.5×7 = 43.5
+const liqWinsBelow = (v: number) => 0.35 + (132.5 - 43.5) / v;
+const liqWins = (v: number) => (liqWinsBelow(v) >= 1 ? "Always" : `< ${Math.round(Math.round(liqWinsBelow(v) * 1000) / 10)}%`);
+export const LIQUIDATION_THRESHOLDS = [
+  { band: "≤ ₹100", wins: liqWins(100), action: "Liquidate / Consolidate", condition: "B2B bulk lot formation" },
+  { band: "₹150", wins: liqWins(150), action: "Liquidate", condition: "Seller consent required" },
+  { band: "₹200", wins: liqWins(200), action: "Liquidate", condition: "Minimum recovery floor met" },
+  { band: "₹250", wins: liqWins(250), action: "Hybrid / Normal reverse", condition: "Category status check" },
+  { band: "≥ ₹300", wins: liqWins(300), action: "Normal reverse", condition: "Resale realisation preferable" },
+];
 export const VOLUME = { pilot: 8_000_000, fy25Shipped: 1_588_000_000, fy26Placed: 2_670_000_000 };
 export const RTO_RATE = 0.17;
 export const FORWARD_COST = 50;
@@ -179,7 +189,7 @@ export function fmtRupee(n: number): string {
 export function fmtPct(n: number, decimals = 1): string {
   return `${(n * 100).toFixed(decimals)}%`;
 }
-// percentage POINTS, never "%" — the model insists the two are not interchangeable
+// percentage POINTS, never "%" - the model insists the two are not interchangeable
 export function fmtPp(n: number, decimals = 2): string {
   return `${(n * 100).toFixed(decimals)} pp`;
 }

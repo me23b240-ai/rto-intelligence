@@ -4,7 +4,8 @@ export type AwbFailureReason =
   | "customer_unavailable" | "address_issue" | "cod_refused"
   | "customer_cancelled" | "wrong_hub" | "unknown";
 export type AwbAddressConfidence = "high" | "medium" | "low";
-
+export type AwbCategoryStatus = "ELIGIBLE" | "REVIEW" | "NOT_ELIGIBLE";
+label: "Low value · hygiene item, disposal authorised"
 export interface AwbParcel {
   awb: string;
   seller: string;
@@ -26,6 +27,10 @@ export interface AwbParcel {
   correctDc: string | null;
   returnDestination: string | null;
   sellerFlexible: boolean;
+  ategoryStatus: AwbCategoryStatus;
+  sellerLiquidationConsent: boolean;
+  sellerMinRecovery: number;
+  writeOffAuthorised: boolean;
 }
 
 export type AwbMovementKind = "delivery" | "return" | "transfer";
@@ -78,7 +83,7 @@ function mk(p: Partial<AwbParcel> & { awb: string }): AwbParcel {
     attemptsLogged: 1, attemptsVerified: 1, maxAttempts: 3,
     prevOrders: 0, prevDelivered: 0, prevRefused: 0,
     addressConfidence: "high", parcelAgeHours: 18, slaHoursLeft: 48,
-    currentDc: AWB_DC_NAME, correctDc: null, returnDestination: "Seller Hub X", sellerFlexible: false,
+    currentDc: AWB_DC_NAME, correctDc: null, returnDestination: "Seller Hub X", sellerFlexible: false,categoryStatus: "ELIGIBLE", sellerLiquidationConsent: false, sellerMinRecovery: 40, writeOffAuthorised: false,
     ...p,
   };
 }
@@ -96,6 +101,8 @@ export const AWB_DEMO_CASES: { label: string; parcel: AwbParcel }[] = [
   { label: "Flexible seller · no movement yet", parcel: mk({ awb: "VL0084429610", orderValue: 279, failureReason: "cod_refused", attemptsLogged: 3, attemptsVerified: 3, prevOrders: 2, prevDelivered: 1, prevRefused: 1, addressConfidence: "high", returnDestination: "Seller Hub W", sellerFlexible: true, slaHoursLeft: 40 }) },
   { label: "Sitting at the wrong hub", parcel: mk({ awb: "VL0084429611", orderValue: 699, failureReason: "wrong_hub", attemptsLogged: 1, attemptsVerified: 1, prevOrders: 3, prevDelivered: 3, addressConfidence: "high", correctDc: "Chennai South Airhub", slaHoursLeft: 30 }) },
   { label: "No movement to seller hub", parcel: mk({ awb: "VL0084429612", orderValue: 329, failureReason: "customer_cancelled", attemptsLogged: 1, attemptsVerified: 1, prevOrders: 1, prevDelivered: 1, addressConfidence: "medium", returnDestination: "Seller Hub Z", slaHoursLeft: 40 }) },
+  { label: "Low value · seller opted in to liquidation", parcel: mk({ awb: "VL0084429613", category: "Home accessories", orderValue: 119, failureReason: "customer_unavailable", attemptsLogged: 3, attemptsVerified: 3, prevOrders: 2, prevDelivered: 1, addressConfidence: "medium", returnDestination: "Seller Hub Z", sellerLiquidationConsent: true, slaHoursLeft: 40 }) },
+  { label: "Low value · hygiene item, write-off authorised", parcel: mk({ awb: "VL0084429614", category: "Innerwear", categoryStatus: "NOT_ELIGIBLE", orderValue: 89, failureReason: "cod_refused", attemptsLogged: 3, attemptsVerified: 3, prevOrders: 1, prevDelivered: 0, prevRefused: 1, addressConfidence: "high", returnDestination: "Seller Hub Z", sellerLiquidationConsent: true, writeOffAuthorised: true, slaHoursLeft: 40 }) },
 ];
 
 export function lookupAwb(raw: string): AwbParcel | null {
@@ -107,7 +114,7 @@ export function lookupAwb(raw: string): AwbParcel | null {
 }
 
 function generateParcel(awb: string): AwbParcel {
-  const rng = mulberry32(hashStr(awb));
+  const rng = awbMulberry32(awbHashStr(awb));
   function pick<T>(arr: T[]): T { return arr[Math.floor(rng() * arr.length)]; }
 
   const payment: AwbPaymentType = rng() < 0.8 ? "COD" : "Prepaid";
@@ -128,7 +135,7 @@ function generateParcel(awb: string): AwbParcel {
   const slaRoll = rng();
   const slaHoursLeft = slaRoll < 0.08 ? Math.round((1 + rng() * 4) * 10) / 10 : Math.round(12 + rng() * 48);
 
-  return {
+  const parcel: AwbParcel = {
     awb, seller: pick(["Sunrise Textiles", "Kaveri Home", "Glow Beauty Co", "Metro Gadgets", "Annapoorna Kitchenware"]),
     category: pick(["Fashion", "Home", "Beauty", "Electronics", "Kitchen"]),
     orderValue: Math.round(199 + rng() * 2600), payment,
@@ -138,5 +145,13 @@ function generateParcel(awb: string): AwbParcel {
     parcelAgeHours: Math.round(6 + rng() * 66), slaHoursLeft,
     currentDc: AWB_DC_NAME, correctDc: failureReason === "wrong_hub" ? "Chennai South Airhub" : null,
     returnDestination, sellerFlexible: rng() < 0.3,
+    categoryStatus: "ELIGIBLE", sellerLiquidationConsent: false, sellerMinRecovery: 40, writeOffAuthorised: false,
   };
+  // new random draws come last so existing AWBs keep their old data
+  const consentRoll = rng();
+  const writeOffRoll = rng();
+  parcel.categoryStatus = parcel.category === "Electronics" || parcel.category === "Beauty" ? "REVIEW" : "ELIGIBLE";
+  parcel.sellerLiquidationConsent = consentRoll < 0.45;
+  parcel.writeOffAuthorised = writeOffRoll < 0.5;
+  return parcel;
 }

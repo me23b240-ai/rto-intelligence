@@ -216,8 +216,8 @@ export default function BusinessImpactPage() {
                 <tr className="bg-slate-50 font-semibold">
                   <td className="py-2 pr-3 text-slate-900">Total / blended</td>
                   <td className="py-2 pr-3 text-slate-700">{fmtPct(CAUSE_TARGETED_SHARE, 0)} targeted</td>
-                  <td className="py-2 pr-3 text-slate-400">—</td>
-                  <td className="py-2 pr-3 text-slate-400">—</td>
+                  <td className="py-2 pr-3 text-slate-400">-</td>
+                  <td className="py-2 pr-3 text-slate-400">-</td>
                   <td className="py-2 text-slate-900">100%</td>
                 </tr>
               </tbody>

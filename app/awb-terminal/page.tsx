@@ -162,6 +162,7 @@ function AwbTerminalContent() {
                       ["Parcel age", `${active.parcel.parcelAgeHours} h`],
                       ["Current DC", active.parcel.currentDc],
                       ["Return destination", active.parcel.returnDestination ?? "Unavailable"],
+                      ["Liquidation eligibility", `${active.parcel.sellerLiquidationConsent ? "Seller opted in" : "No seller consent"} · ${(active.parcel.categoryStatus ?? "ELIGIBLE").replace("_", " ")}`],
                       ["Seller · SLA", `${active.parcel.seller} · ${active.parcel.slaHoursLeft} h left`],
                     ].map(([k, v]) => (
                       <div key={k}><dt className="text-[10px] uppercase tracking-wide text-slate-400">{k}</dt><dd className="text-sm text-slate-800">{v}</dd></div>
