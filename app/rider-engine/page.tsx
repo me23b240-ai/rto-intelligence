@@ -204,6 +204,7 @@ function DcOwnerView() {
                       <div className="text-right">
                         <div className="text-[10px] text-slate-400 mb-0.5">Match score</div>
                         <ScoreChip score={runnerUp.score} />
+                      </div>
                     </div>
                     <ul className="list-disc pl-5 text-xs text-slate-600 mt-1 space-y-0.5">
                       {(runnerUp.weaknesses.length ? runnerUp.weaknesses : ["Lower overall score than the recommended rider"]).map((w) => <li key={w}>{w}</li>)}
