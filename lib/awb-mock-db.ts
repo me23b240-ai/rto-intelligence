@@ -5,7 +5,6 @@ export type AwbFailureReason =
   | "customer_cancelled" | "wrong_hub" | "unknown";
 export type AwbAddressConfidence = "high" | "medium" | "low";
 export type AwbCategoryStatus = "ELIGIBLE" | "REVIEW" | "NOT_ELIGIBLE";
-label: "Low value · hygiene item, disposal authorised"
 export interface AwbParcel {
   awb: string;
   seller: string;
@@ -27,7 +26,7 @@ export interface AwbParcel {
   correctDc: string | null;
   returnDestination: string | null;
   sellerFlexible: boolean;
-  ategoryStatus: AwbCategoryStatus;
+  categoryStatus: AwbCategoryStatus;
   sellerLiquidationConsent: boolean;
   sellerMinRecovery: number;
   writeOffAuthorised: boolean;
@@ -114,7 +113,7 @@ export function lookupAwb(raw: string): AwbParcel | null {
 }
 
 function generateParcel(awb: string): AwbParcel {
-  const rng = awbMulberry32(awbHashStr(awb));
+  const rng = mulberry32(hashStr(awb));
   function pick<T>(arr: T[]): T { return arr[Math.floor(rng() * arr.length)]; }
 
   const payment: AwbPaymentType = rng() < 0.8 ? "COD" : "Prepaid";
