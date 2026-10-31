@@ -102,13 +102,6 @@ const CAUSE_TOTAL = CAUSES.reduce((s, c) => s + c.riderShare * c.addressable * c
 export const CAUSE_TREE = CAUSES.map((c) => ({ ...c, benefitShare: (c.riderShare * c.addressable * c.fixSuccess) / CAUSE_TOTAL }));
 export const CAUSE_TARGETED_SHARE = CAUSES.reduce((s, c) => s + c.riderShare, 0);
 
-export const LIQUIDATION_THRESHOLDS = [
-  { band: "≤ ₹100", wins: "Always", action: "Liquidate / Consolidate", condition: "B2B bulk lot formation" },
-  { band: "₹150", wins: "< 94%", action: "Liquidate", condition: "Seller consent required" },
-  { band: "₹200", wins: "< 82%", action: "Liquidate", condition: "Minimum recovery floor met" },
-  { band: "₹250", wins: "< 71%", action: "Hybrid / Normal reverse", condition: "Category status check" },
-  { band: "≥ ₹300", wins: "< 65%", action: "Normal reverse", condition: "Resale realisation preferable" },
-];
 
 export const EXCLUDED_DRIVERS = [
   { driver: "Contribution margin on converted orders", effect: "Positive upside", context: "Gross profit retained on saved sales" },

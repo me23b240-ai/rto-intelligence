@@ -57,9 +57,9 @@ export default function BusinessImpactPage() {
   }));
 
   const scale = [
-    { label: "Pilot-scale (team file)", v: VOLUME.pilot },
-    { label: "FY25 shipped (public)", v: VOLUME.fy25Shipped },
-    { label: "FY26 placed (team slide)", v: VOLUME.fy26Placed },
+    { label: "Pilot-scale ", v: VOLUME.pilot },
+    { label: "FY25 shipped ", v: VOLUME.fy25Shipped },
+    { label: "FY26 placed ", v: VOLUME.fy26Placed },
   ].map((r) => ({ ...r, m: modelAt(r.v, "base") }));
 
   return (
