@@ -25,10 +25,15 @@ function Tag({ children, tone = "slate" }: { children: React.ReactNode; tone?: "
   return <span className={`inline-block text-[10px] font-semibold tracking-wide border rounded px-1.5 py-0.5 ${styles[tone]}`}>{children}</span>;
 }
 
-function ScoreChip({ score }: { score: number }) {
-  const tone = score >= 80 ? { bg: "#dcfce7", text: "#15803d", label: "Strong fit" }
-    : score >= 60 ? { bg: "#fef3c7", text: "#b45309", label: "Workable" }
-    : { bg: "#fee2e2", text: "#b91c1c", label: "Weak fit" };
+function ScoreChip({ score, variant = "fit" }: { score: number; variant?: "fit" | "reliability" }) {
+  const labels = variant === "fit"
+    ? { hi: "Strong fit", mid: "Workable", lo: "Weak fit" }
+    : { hi: "High", mid: "Moderate", lo: "Low" };
+
+  const tone = score >= 80 ? { bg: "#dcfce7", text: "#15803d", label: labels.hi }
+    : score >= 60 ? { bg: "#fef3c7", text: "#b45309", label: labels.mid }
+    : { bg: "#fee2e2", text: "#b91c1c", label: labels.lo };
+
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold" style={{ backgroundColor: tone.bg, color: tone.text }}>
       <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: tone.text }} />
@@ -98,7 +103,7 @@ function DcOwnerView() {
                   <th className="px-4 py-2.5">DC → customer</th>
                   <th className="px-4 py-2.5">Case RTO band</th>
                   <th className="px-4 py-2.5">SLA left</th>
-                  <th className="px-4 py-2.5">Recommended rider</th>
+                  <th className="px-4 py-2.5">Recommended rider · match score </th>
                   <th className="px-4 py-2.5">Incremental route</th>
                   <th className="px-4 py-2.5"></th>
                 </tr>
@@ -113,7 +118,7 @@ function DcOwnerView() {
                       <td className="px-4 py-2.5 text-slate-600">{dc.km} km</td>
                       <td className="px-4 py-2.5 text-slate-600">{dc.band} · {dc.benchmark}%</td>
                       <td className={`px-4 py-2.5 ${p.slaRemainingMin < 40 ? "text-red-600 font-medium" : "text-slate-600"}`}>{p.slaRemainingMin} min</td>
-                      <td className="px-4 py-2.5 text-slate-700">{best ? `${best.rider.name} · score ${best.score}` : <span className="text-red-500">No feasible rider</span>}</td>
+                      <td className="px-4 py-2.5 text-slate-700">{best ? `${best.rider.name} · match ${best.score}` : <span className="text-red-500">No feasible rider</span>}</td>
                       <td className="px-4 py-2.5 text-slate-600">{best ? `+${best.option.incrementalDistanceKm.toFixed(1)} km` : "-"}</td>
                       <td className="px-4 py-2.5">
                         <button onClick={() => setActiveAwb(p.awb)} className="text-xs font-semibold text-[var(--meesho-purple)] hover:underline">View</button>
@@ -153,7 +158,10 @@ function DcOwnerView() {
                 <div className="rounded-lg border-2 border-green-300 bg-green-50 p-3">
                   <div className="flex items-center justify-between mb-1">
                     <div className="text-xs text-green-700 font-semibold uppercase">Recommended</div>
-                    <ScoreChip score={top.score} />
+                    <div className="text-right">
+                      <div className="text-[10px] text-slate-400 mb-0.5">Match score</div>
+                      <ScoreChip score={top.score} />
+                  </div>
                   </div>
                   <div className="text-sm font-bold text-slate-900">{top.rider.name}</div>
                   <div className="text-xs text-slate-600 mt-1.5 space-y-0.5">
@@ -193,7 +201,9 @@ function DcOwnerView() {
                   <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
                     <div className="flex items-center justify-between mb-1">
                       <div className="text-xs text-slate-500 font-semibold uppercase">Why not {runnerUp.rider.name}?</div>
-                      <ScoreChip score={runnerUp.score} />
+                      <div className="text-right">
+                        <div className="text-[10px] text-slate-400 mb-0.5">Match score</div>
+                        <ScoreChip score={runnerUp.score} />
                     </div>
                     <ul className="list-disc pl-5 text-xs text-slate-600 mt-1 space-y-0.5">
                       {(runnerUp.weaknesses.length ? runnerUp.weaknesses : ["Lower overall score than the recommended rider"]).map((w) => <li key={w}>{w}</li>)}
@@ -264,14 +274,14 @@ function ValmoOpsView() {
       <div className="rounded-xl border border-slate-200 bg-white overflow-hidden">
         <div className="px-4 py-3 border-b border-slate-100">
           <h2 className="text-sm font-semibold text-slate-900">Rider economics</h2>
-          <p className="text-xs text-slate-400 mt-0.5">Score is the 90-day recency-weighted success rate (see Rider Data tab for the full breakdown).</p>
+          <p className="text-xs text-slate-400 mt-0.5">Reliability is the 90-day recency-weighted success rate (see Rider Data tab for the full breakdown).</p>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-slate-400 uppercase border-b border-slate-100">
                 <th className="px-4 py-2.5">Rider</th>
-                <th className="px-4 py-2.5">Score</th>
+                <th className="px-4 py-2.5">Reliability</th>
                 <th className="px-4 py-2.5">Deliveries</th>
                 <th className="px-4 py-2.5">Base payout</th>
                 <th className="px-4 py-2.5">Performance</th>
@@ -288,7 +298,7 @@ function ValmoOpsView() {
                 return (
                   <tr key={r.id} className="border-b border-slate-50">
                     <td className="px-4 py-2.5 font-medium text-slate-800">{r.name}</td>
-                    <td className="px-4 py-2.5"><ScoreChip score={score} /></td>
+                    <td className="px-4 py-2.5"><ScoreChip score={score} variant="reliability"/></td>
                     <td className="px-4 py-2.5 text-slate-600">{r.successfulToday}/{r.completedToday}</td>
                     <td className="px-4 py-2.5 text-slate-600">₹{p.basePayout}</td>
                     <td className="px-4 py-2.5 text-slate-600">₹{p.performanceIncentive}</td>
